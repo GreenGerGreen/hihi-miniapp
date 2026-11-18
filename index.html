@@ -430,7 +430,8 @@ function pizzaSelect(size,price){flow={size,price};go('pizzaFlavor')}
 function inlineQtyOpen(kind,index){inlineQty={kind,index};render()}
 function inlineQtyCancel(){inlineQty=null;render()}
 function inlineQtySelect(n,linked){if(table==='adult'&&(inlineQty?.kind==='food'||inlineQty?.kind==='nugget'||inlineQty?.kind==='drink'))linked=false;if(!Number.isInteger(n)||n<1||n>999)return alert('Укажите количество от 1 до 999');let f=inlineQty;if(!f)return;inlineQty=null;
- if(f.kind==='sauce'){flow={count:n,linked};inlineQty={kind:'sauceFlavor',index:0};render();return}\n if(f.kind==='nugget'){flow={count:n,linked};inlineQty={kind:'nuggetSize',index:0};render();return}
+ if(f.kind==='sauce'){flow={count:n,linked};inlineQty={kind:'sauceFlavor',index:0};render();return}
+ if(f.kind==='nugget'){flow={count:n,linked};inlineQty={kind:'nuggetSize',index:0};render();return}
  if(f.kind==='drink'){flow.count=n;flow.linked=linked;inlineQty={kind:'drinkSize',index:f.index};render();return}
  if(f.kind==='food'){let x=FOODS[f.index];if(x[0]==='Мороженое'){flow={food:f.index,count:n,linked};inlineQty={kind:'iceScoops',index:f.index};render();return}put(table+'|'+x[0],x[0],x[1],n,table,{linked,unit:'порц.'});return}
  if(f.kind==='fun'){let x=SERVICES[f.index];let id='fun|'+x[0];let previous=state.cart[id];state.cart[id]={id,name:x[0],price:x[1],qty:n,kind:'fun',unit:x[0]==='Игровая комната'?'реб.':'шт.',linked, ...(x[0]==='Игровая комната'?{blocks:previous?.blocks||1,durationStep:30}:{})};save();render();return}
