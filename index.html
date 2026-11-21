@@ -2449,6 +2449,20 @@ h+='</div>';
 }else if(screen==='teenPrograms'){h+=navigation('fun')+`<h2 class="screen-title">Программы для подростков</h2><p class="subtitle">Выберите программу · 1 час · 5 500 ₽</p>`;TEEN_PROGRAMS.forEach((p,i)=>h+=choice(p,`teenAdd(${i})`))}else if(screen==='ages'){h+=navigation('fun')+`<h2 class="screen-title">Возрастная группа</h2><p class="age-guidance">Мы подготовили ориентировочный список героев по возрастам. Если вам нужен определённый герой, мы адаптируем программу под подходящий возраст.</p>`;Object.keys(THEMES).forEach(a=>h+=choice(a,`flow.age=${attr(a)};go('themes')`))}else if(screen==='themes'){h+=navigation('ages')+`<h2 class="screen-title">Тема анимации</h2><p class="subtitle">${esc(flow.age)}</p>`;THEMES[flow.age].forEach((a,i)=>h+=choice(a,`themeAdd(${i})`))}else if(screen==='playQty'){h+=navigation('fun')+chooseQuantity('🧸 Игровая комната','play')}else if(screen==='cart')h+=cartScreen();else if(screen==='editList'){h+=navigation('cart')+`<h2 class="screen-title">✏️ Изменить смету</h2><p class="subtitle">Выберите позицию для редактирования</p>`;items().forEach(x=>h+=choice(x.name,`editId=${attr(x.id)};go('edit')`,x.qty+' '+(x.unit||'шт.')));if(!items().length)h+='<div class="empty">Смета пуста</div>'}else if(screen==='edit'){let x=state.cart[editId];if(!x){go('cart');return}h+=navigation('cart')+`<h2 class="screen-title">${esc(x.name)}</h2><div class="panel"><div class="row"><span class="muted">${rub(x.price)} за единицу</span><span class="price">${rub(x.qty*x.price*(x.blocks||1))}</span></div><div class="mini-counter"><span>Количество</span><div class="counter"><button onclick="change(${attr(editId)},-1)">−</button><b>${x.qty}</b><button onclick="change(${attr(editId)},1)" ${editId===OWN_FOOD_ID?'disabled':''}>+</button></div></div>${x.blocks?`<div class="divider"></div><div class="mini-counter"><span>⏱ Время: ${x.blocks*(x.durationStep||30)} мин</span><div class="counter"><button onclick="changeBlocks(${attr(editId)},-1)">−</button><b>${x.blocks}</b><button onclick="changeBlocks(${attr(editId)},1)">+</button></div></div>`:''}</div><button class="action danger wide" onclick="delete state.cart[editId];save();go('cart')">Удалить позицию</button>`}else if(screen==='kidsEdit'){h+=navigation('cart')+`<h2 class="screen-title">Изменить количество детей</h2><p class="subtitle">При изменении числа детей автоматически изменится количество следующих позиций, выбранных «по количеству детей»: ${items().filter(x=>x.linked).map(x=>esc(x.name)).join(', ')||'таких позиций пока нет'}.</p><label class="field">От 1 до 30<input id="newKids" type="number" min="1" max="30" inputmode="numeric" value="${state.kids}"></label><button class="action wide" onclick="setKids(Number(document.getElementById('newKids').value))">Сохранить и вернуться в смету</button><p class="smallnote">Позиции, выбранные по количеству детей, пересчитаются. Ручные количества сохранятся.</p>`}else if(screen==='request'){h+=navigation('cart')+`<h2 class="screen-title">📨 Оформить заявку</h2><p class="subtitle">Только имя и телефон — ничего лишнего</p><label class="field">Ваше имя<input id="customer" type="text" autocomplete="name" placeholder="Как к вам обращаться"></label><label class="field">Номер телефона<input id="phone" type="tel" autocomplete="tel" placeholder="+7 999 123-45-67"></label><button class="action wide" onclick="sendDemo()">Отправить заявку</button><div class="panel accent"><strong>Демонстрационный режим</strong><p class="muted">Сайт пока не подключён к Telegram-серверу. Заявки не отправляются. Для реальной отправки подключим защищённый сервер бота.</p></div>`}h+='</div>'}document.getElementById('app').innerHTML=h;hihiNormalizeSelectedCards();renderBottom();renderModal();syncFooterSpace();requestAnimationFrame(syncFooterSpace)}
 
 function hihiNormalizeSelectedCards(){
+ // Empty status containers are not a selection: prevent phantom green pills.
+ document.querySelectorAll('#app .generic-fun-card,#app .decor-card').forEach(card=>{
+   const bar=card.querySelector(':scope > .mini-counter');
+   if(!bar)return;
+   const pill=bar.querySelector(':scope > .pill.selected');
+   if(!pill || !pill.textContent.trim()){
+     bar.classList.add('hihi-empty-selection');
+     bar.style.setProperty('display','none','important');
+   }
+ });
+ document.querySelectorAll('#app .service-v49 > .service-status').forEach(status=>{
+   const pill=status.querySelector('.pill.selected');
+   if(!pill || !pill.textContent.trim())status.classList.add('hihi-empty-selection');
+ });
  // Quantity controls must never also activate their containing product picker.
  document.querySelectorAll('#app .counter button,#app .stepper button,#app .play-people-stepper button').forEach(button=>{
    button.addEventListener('click',event=>event.stopPropagation());
@@ -2474,12 +2488,12 @@ function hihiNormalizeSelectedCards(){
   if(pill){
    bar.classList.add('hihi-summary-bar');
    const important=(el,props)=>{for(const [key,value] of Object.entries(props))el.style.setProperty(key,value,'important')};
-   important(bar,{'width':'calc(100% - 24px)','margin':'9px 12px 11px','border-radius':'15px','background':'#d9f7e8','min-height':'44px','box-sizing':'border-box','display':'flex','align-items':'center','gap':'8px','padding':'9px 12px'});
+   important(bar,{'width':'100%','margin':'10px 0 0','border-radius':'15px','background':'#d9f7e8','min-height':'44px','box-sizing':'border-box','display':'flex','align-items':'center','gap':'8px','padding':'9px 12px'});
    important(pill,{'display':'inline','background':'transparent','border':'0','box-shadow':'none','padding':'0','margin':'0','font-weight':'400','font-size':'14px','color':'#17653e','flex':'1 1 auto'});
    const remove=card.querySelector(':scope > .service-remove-text,:scope > .decor-remove-text');
    if(remove){remove.textContent='×';remove.classList.add('hihi-summary-close','order-del','pizza-order-close');remove.setAttribute('aria-label','Убрать позицию');bar.appendChild(remove);important(remove,{'position':'static','display':'grid','place-items':'center','width':'35px','height':'35px','min-width':'35px','margin':'0 0 0 auto','padding':'0','border-radius':'11px','border':'1px solid #ff98b4','background':'#fff0f4','color':'#c21b59','font-size':'23px','line-height':'1','transform':'none'});}
   }
-  else if(!card.classList.contains('is-picking'))bar.classList.add('hihi-empty-selection');
+  else if(!card.classList.contains('is-picking')){bar.classList.add('hihi-empty-selection');bar.style.setProperty('display','none','important');}
  });
 }
 function syncFooterSpace(){
@@ -2727,4 +2741,127 @@ try{render()}catch(e){document.getElementById('app').innerHTML='<div class="wrap
  #app .service-v49 > .product > .play-people-stepper button {width:32px!important;min-width:32px!important;height:34px!important;flex-basis:32px!important}
 }
 </style>
-</body></html>
+<style id="hihi-canonical-inset-selected-v2">
+/* 2026-11-21: canonical selection capsule — inset inside each white product card. */
+#app .panel:is(.generic-fun-card,.decor-card,.compact-food,.service-v49,.unified-catalog,.pizza-unified,.pizza-catalog){
+  box-sizing:border-box!important;
+  padding:12px 14px!important;
+  overflow:visible!important;
+}
+/* Never render a blank green status as if the item had been chosen. */
+#app .panel .hihi-empty-selection,
+#app .panel .service-status[style*="display:none"],
+#app .panel .service-status[style*="display: none"],
+#app .panel .mini-counter.hihi-empty-selection {display:none!important}
+#app .panel.generic-fun-card>.mini-counter.hihi-empty-selection,
+#app .panel.decor-card>.mini-counter.hihi-empty-selection{display:none!important;background:transparent!important;min-height:0!important;margin:0!important;padding:0!important}
+#app .panel:is(.generic-fun-card,.decor-card).is-selected > .mini-counter.hihi-summary-bar,
+#app .panel.service-v49 > .service-status:has(.pill.selected),
+#app .panel.compact-food > .v96-selected,
+#app .panel.unified-catalog > .catalog-orders > .order-detail,
+#app .panel.unified-catalog > .catalog-orders > .pizza-order-row,
+#app .panel.pizza-unified > .catalog-orders > .pizza-order-row,
+#app .panel.pizza-catalog > .catalog-orders > .pizza-order-row,
+#app .panel .catalog-orders > .v96-volume-summary,
+#app .panel .catalog-orders > .pizza-order-row,
+#app .panel .catalog-orders > .order-detail,
+#app .panel .pizza-summary {
+  position:relative!important;
+  inset:auto!important;
+  transform:none!important;
+  float:none!important;
+  box-sizing:border-box!important;
+  display:flex!important;
+  flex-direction:row!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:9px!important;
+  background:#d9f7e8!important;
+  color:#17653e!important;
+  border:0!important;
+  border-radius:16px!important;
+  box-shadow:none!important;
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%!important;
+  min-height:48px!important;
+  height:auto!important;
+  margin:10px 0 0!important;
+  padding:10px 13px!important;
+}
+/* Product card keeps its white perimeter; even historical full-bleed strips stay inset. */
+#app .panel:is(.generic-fun-card,.decor-card).is-selected {
+ padding-bottom:12px!important;overflow:visible!important;
+}
+#app .panel:is(.generic-fun-card,.decor-card).is-selected > .mini-counter.hihi-summary-bar {
+  margin:10px 0 0!important;width:100%!important;max-width:100%!important;
+  border-radius:16px!important;padding:10px 13px!important;
+}
+#app .panel.service-v49 > .service-status:has(.pill.selected) {
+  margin:10px 0 0!important;width:100%!important;border-radius:16px!important;
+}
+#app .panel .catalog-orders{width:100%!important;max-width:100%!important;min-width:0!important;}
+#app .panel .catalog-orders > :is(.order-detail,.pizza-order-row,.v96-volume-summary){margin:8px 0 0!important;}
+/* The summary caption must share the vertical centerline of the pink close button. */
+#app .panel .hihi-summary-bar > .pill.selected,
+#app .panel .service-status > .pill.selected,
+#app .panel .v96-selected > .hihi-selected-description,
+#app .panel .catalog-orders .hihi-selected-description,
+#app .panel .pizza-summary .hihi-selected-description{
+  position:static!important;transform:none!important;inset:auto!important;
+  display:flex!important;align-items:center!important;
+  align-self:stretch!important;flex:1 1 auto!important;min-width:0!important;
+  height:auto!important;min-height:0!important;max-width:100%!important;
+  padding:0!important;margin:0!important;border:0!important;
+  background:transparent!important;box-shadow:none!important;
+  color:#17653e!important;font-family:inherit!important;font-size:14px!important;
+  font-weight:400!important;line-height:1.4!important;text-align:left!important;
+  white-space:normal!important;
+}
+#app .hihi-selected-price strong{font-weight:850!important}
+/* Use the same pizza-style × control in every summary pill. */
+#app .panel .hihi-summary-bar > .hihi-summary-close,
+#app .panel .service-status > .order-del,
+#app .panel .v96-selected > .hihi-unified-close,
+#app .panel .catalog-orders .order-del,
+#app .panel .catalog-orders .pizza-order-close{
+  position:static!important;inset:auto!important;transform:none!important;
+  flex:0 0 35px!important;width:35px!important;min-width:35px!important;
+  max-width:35px!important;height:35px!important;min-height:35px!important;
+  box-sizing:border-box!important;margin:0 0 0 auto!important;padding:0!important;
+  border:1px solid #ff98b4!important;border-radius:11px!important;
+  background:#fff0f4!important;color:#c21b59!important;
+  font:800 23px/1 inherit!important;display:grid!important;place-items:center!important;
+}
+/* The quantity controls are right-aligned in the same column as the fuchsia plus. */
+#app .panel:is(.decor-card,.generic-fun-card,.compact-food,.service-v49) > .product{
+ display:grid!important;grid-template-columns:70px minmax(0,1fr) auto!important;
+ align-items:center!important;gap:10px!important;
+}
+#app .panel:is(.decor-card,.generic-fun-card,.compact-food,.service-v49) > .product > :is(.hihi-top-counter,.v96-actions,.play-people-stepper),
+#app .panel:is(.decor-card,.generic-fun-card,.compact-food,.service-v49) > .product .hihi-top-counter {
+  position:static!important;inset:auto!important;transform:none!important;
+  grid-column:3!important;align-self:center!important;justify-self:end!important;
+  display:flex!important;align-items:center!important;justify-content:flex-end!important;
+  gap:7px!important;margin:0!important;padding:0!important;
+  min-width:0!important;max-width:100%!important;
+}
+#app .panel:is(.decor-card,.generic-fun-card,.compact-food,.service-v49) > .product > :is(.inline-open,.service-select,.v96-actions),
+#app .panel:is(.decor-card,.generic-fun-card,.compact-food,.service-v49) > .product > .hihi-top-counter{
+  margin-right:0!important;
+}
+#app .panel .hihi-top-counter button,
+#app .panel .v96-actions .counter button,
+#app .panel .play-people-stepper button {
+  display:grid!important;place-items:center!important;
+  flex:0 0 36px!important;width:36px!important;min-width:36px!important;
+  height:36px!important;min-height:36px!important;max-height:36px!important;
+  padding:0!important;margin:0!important;border-radius:11px!important;
+}
+@media(max-width:480px){
+ #app .panel:is(.decor-card,.generic-fun-card,.compact-food,.service-v49) > .product{
+   grid-template-columns:58px minmax(0,1fr) auto!important;gap:8px!important;
+ }
+ #app .panel .hihi-top-counter,#app .panel .v96-actions .counter,#app .panel .play-people-stepper{gap:5px!important;}
+}
+</style></body></html>
