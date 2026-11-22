@@ -2306,7 +2306,12 @@ function addInlineNuggets(){const n=Number(document.querySelector('input[name="n
 
 function drinkInline(type){const index=type==='juice'?0:1;const title=type==='juice'?'Сок':'Вода';return `<div class="drink-inline"><button class="choice" onclick="flow={drink:'${type}'};inlineQtyOpen('drink',${index})"><span>${iconFor(type==='juice'?'🧃':'💧')} ${title}</span><span>⌄</span></button>${inlineQty?.kind==='drink'&&inlineQty.index===index?inlineQtyBlock('drink',index):['drinkSize','drinkFlavor'].includes(inlineQty?.kind)&&inlineQty.index===index?inlineQtyBlock('drink',index):''}</div>`}
 function groupRows(prefix,unit='порц.'){return items().filter(x=>x.kind===table&&x.name.startsWith(prefix)).map(x=>`<div class="order-detail editable-order" role="button" tabindex="0" onclick="if(event.target.closest('.order-del'))return;editChosen(${attr(x.id)})" onkeydown="if(event.key==='Enter')editChosen(${attr(x.id)})"><span class="hihi-selected-description">${hihiSelectedLine(`${esc(x.name.replace(prefix,''))} · ${x.qty} ${unit} · ${rub(x.qty*x.price)}`)}</span><button class="order-del pizza-order-close" onclick="event.stopPropagation();removeSelected(${attr(x.id)})">×</button></div>`).join('')}
-function drinkVolumeSummary(prefix){return ['0,2 л','1 л'].map(v=>{const arr=items().filter(x=>x.kind===table&&x.name.startsWith(prefix)&&x.name.endsWith(', '+v));const q=arr.reduce((n,x)=>n+x.qty,0);return q?`<div class="order-detail v96-volume-summary"><span class="hihi-selected-description">${hihiSelectedLine(`${v} · ${q} шт. · ${rub(arr.reduce((n,x)=>n+x.qty*x.price,0))}`)}</span></div>`:''}).join('')}
+function removeDrinkVolume(prefix,volume){
+  const chosen=items().filter(x=>x.kind===table&&x.name.startsWith(prefix)&&x.name.endsWith(', '+volume));
+  for(const x of chosen)delete state.cart[x.id];
+  save();render();
+}
+function drinkVolumeSummary(prefix){return ['0,2 л','1 л'].map(v=>{const arr=items().filter(x=>x.kind===table&&x.name.startsWith(prefix)&&x.name.endsWith(', '+v));const q=arr.reduce((n,x)=>n+x.qty,0);return q?`<div class="order-detail v96-volume-summary"><span class="hihi-selected-description">${hihiSelectedLine(`${v} · ${q} шт. · ${rub(arr.reduce((n,x)=>n+x.qty*x.price,0))}`)}</span><button type="button" class="order-del pizza-order-close hihi-unified-close" aria-label="Убрать весь сок объёмом ${v}" onclick="removeDrinkVolume(${attr(prefix)},${attr(v)})">×</button></div>`:''}).join('')}
 function catalogPanel(title,emoji,click,details='',picker=''){return `<article class="panel unified-catalog"><div class="product catalog-product"><div class="product-art">${iconFor(emoji,title)}</div><div class="product-text"><h3>${title}</h3><div class="muted">${title==='Наггетсы'?'<span class="catalog-desc-line">2/4/6 шт.</span><span class="catalog-price-line">80/120/150 ₽</span>':title==='Соусы'?'<span class="catalog-desc-line">25 г</span><span class="catalog-price-line">60 ₽</span>':title==='Сок'?'<span class="catalog-desc-line">0,2/1 л</span><span class="catalog-price-line">60/250 ₽</span>':title==='Вода'?'<span class="catalog-desc-line">0,5/1,5 л</span><span class="catalog-price-line">60/120 ₽</span>':''}</div></div><button class="inline-open" aria-label="Добавить" onclick="event.stopPropagation();${click}">+</button></div>${details?`<div class="catalog-orders">${details}</div>`:''}${picker}</article>`}
 let pizzaChoicesOpen=false;function pizzaChoicesToggle(){pizzaChoicesOpen=!pizzaChoicesOpen;renderKeepScroll()}
 function openPizza(){flow={size:25,price:700};go('pizzaFlavor')}
@@ -3291,107 +3296,208 @@ body > #bottom > .bottom {
 })();
 </script>
 
-<style id="hihi-approved-compact-counter-layout-20261122">
-/* Approved compact card layout: icon / description / counter, in one row. */
-#app .panel:is(.compact-food,.decor-card,.generic-fun-card,.service-v49,.v96-card) > .product {
+
+<style id="hihi-entertainment-juice-tabs-final-20261122">
+/* The last compact update mistakenly placed the two entertainment actions in
+   a narrow grid column. The entertainment card gets an independent layout. */
+#app .panel.service-v49 > .product {
   display:grid!important;
-  grid-template-columns: clamp(42px, 12vw, 58px) minmax(0, 1fr) max-content!important;
+  grid-template-columns:52px minmax(0,1fr) auto!important;
   grid-template-rows:auto!important;
-  gap:10px!important;
   align-items:center!important;
-  min-height:68px!important;
+  gap:10px!important;
+  min-height:70px!important;
   height:auto!important;
   padding:0!important;
-  margin:0!important;
 }
-#app .panel:is(.compact-food,.decor-card,.generic-fun-card,.service-v49,.v96-card) > .product > .product-art {
+#app .panel.service-v49 > .product > .product-art {
   grid-column:1!important;
   grid-row:1!important;
+  width:52px!important;
   align-self:center!important;
   margin:0!important;
 }
-#app .panel:is(.compact-food,.decor-card,.generic-fun-card,.service-v49,.v96-card) > .product > .product-text {
+#app .panel.service-v49 > .product > .product-text {
   grid-column:2!important;
   grid-row:1!important;
   min-width:0!important;
-  width:auto!important;
-  max-width:100%!important;
+  max-width:none!important;
+  width:100%!important;
   margin:0!important;
-  align-self:center!important;
-  overflow-wrap:break-word!important;
+  padding:0!important;
+  overflow-wrap:normal!important;
 }
-#app .panel:is(.compact-food,.decor-card,.generic-fun-card,.service-v49,.v96-card) > .product > :is(.v96-actions,.hihi-top-counter,.play-people-stepper,.service-side,.service-select,.inline-open) {
+#app .panel.service-v49 > .product > .product-text h3,
+#app .panel.service-v49 > .product > .product-text .muted {
+  overflow-wrap:break-word!important;
+  word-break:normal!important;
+  white-space:normal!important;
+}
+#app .panel.service-v49 > .product > :is(.service-select,.service-side){
   grid-column:3!important;
   grid-row:1!important;
-  justify-self:end!important;
   align-self:center!important;
+  justify-self:end!important;
   position:static!important;
   inset:auto!important;
   transform:none!important;
   margin:0!important;
-  padding:0!important;
-  width:max-content!important;
-  max-width:none!important;
-  height:auto!important;
 }
-#app .panel .product > .v96-actions,
-#app .panel .product > .hihi-top-counter,
-#app .panel .product > .play-people-stepper,
-#app .panel .product > .v96-actions > .counter,
-#app .panel .product > .service-side > .counter {
-  flex-wrap:nowrap!important;
+#app .panel.service-v49 > .product > .service-side {
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:stretch!important;
+  justify-content:center!important;
+  gap:7px!important;
+  width:108px!important;
+  max-width:108px!important;
+  padding:0!important;
+}
+#app .panel.service-v49 .service-side > button {
+  position:static!important;
+  inset:auto!important;
+  transform:none!important;
   display:flex!important;
   align-items:center!important;
-  justify-content:flex-end!important;
-  gap:6px!important;
-  white-space:nowrap!important;
-  min-width:0!important;
-  position:static!important;
-  transform:none!important;
-}
-#app .panel .product > :is(.v96-actions,.hihi-top-counter,.play-people-stepper) button:not(.hihi-plus-square),
-#app .panel .product > .service-side .counter button {
-  width:34px!important;
-  height:34px!important;
-  min-width:34px!important;
-  max-width:34px!important;
-  min-height:34px!important;
-  max-height:34px!important;
-  flex:0 0 34px!important;
-  border-radius:10px!important;
+  justify-content:center!important;
+  width:100%!important;
+  max-width:100%!important;
+  height:35px!important;
+  min-height:35px!important;
+  margin:0!important;
+  padding:6px!important;
+  border-radius:11px!important;
   box-sizing:border-box!important;
-  padding:0!important;
+  font-size:12px!important;
+  line-height:1.1!important;
+  white-space:nowrap!important;
+}
+#app .panel.service-v49 > .service-status:has(.pill.selected) {
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:10px!important;
+  width:100%!important;
+  box-sizing:border-box!important;
+  min-height:52px!important;
+  padding:10px 13px!important;
+  border-radius:16px!important;
+  margin:12px 0 0!important;
+  background:#d9f7e8!important;
+}
+#app .panel.service-v49 > .service-status .pill.selected,
+#app .panel.decor-card .mini-counter .pill.selected {
+  display:flex!important;
+  align-items:center!important;
+  align-self:center!important;
+  min-height:34px!important;
+  line-height:1.35!important;
+  margin:0!important;
+}
+#app .panel.decor-card .mini-counter.hihi-summary-bar,
+#app .panel.decor-card .mini-counter:has(.pill.selected) {
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+}
+#app .panel.decor-card .mini-counter .pill.selected > *,
+#app .panel.service-v49 > .service-status .pill.selected > * {
+  align-self:center!important;
+}
+/* Same segmented tabs as the pizza size chooser, with a clearly filled active tab. */
+#app .table-tabs {
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:8px!important;
+  padding:6px!important;
+  margin:10px 0 15px!important;
+  border:1px solid #b6dbff!important;
+  border-radius:17px!important;
+  background:#deefff!important;
+}
+#app .table-tabs > button {
+  box-sizing:border-box!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:100%!important;
+  min-width:0!important;
+  min-height:45px!important;
+  margin:0!important;
+  padding:9px 7px!important;
+  border:0!important;
+  border-radius:12px!important;
+  background:transparent!important;
+  color:#1c478e!important;
+  font-weight:800!important;
+  font-size:14px!important;
+  line-height:1.2!important;
+  box-shadow:none!important;
+}
+#app .table-tabs > button.active,
+#app .table-tabs > button[aria-selected="true"] {
+  background:linear-gradient(110deg,#f725ac,#e90091)!important;
+  color:#fff!important;
+  box-shadow:0 4px 10px #f5009829!important;
+}
+/* Grouped juice volume can be removed with the same visible square close icon. */
+#app .catalog-orders .v96-volume-summary {
+  display:flex!important;
+  justify-content:space-between!important;
+  align-items:center!important;
+  gap:10px!important;
+  min-height:49px!important;
+}
+#app .catalog-orders .v96-volume-summary > .pizza-order-close {
+  position:static!important;
   display:grid!important;
   place-items:center!important;
+  flex:0 0 36px!important;
+  width:36px!important;
+  height:36px!important;
+  min-width:36px!important;
+  padding:0!important;
+  margin:0 0 0 auto!important;
+  border:1px solid #ff96b6!important;
+  border-radius:11px!important;
+  background:#fff0f4!important;
+  color:#bf1555!important;
+  font-size:23px!important;
+  line-height:1!important;
 }
-#app .panel .product > :is(.v96-actions,.hihi-top-counter,.play-people-stepper) :is(b,strong,output),
-#app .panel .product > .service-side .counter :is(b,strong,output) {
-  min-width:18px!important;
-  margin:0!important;
-  text-align:center!important;
-  font-variant-numeric:tabular-nums!important;
+@media(max-width:380px){
+  #app .panel.service-v49 > .product {grid-template-columns:44px minmax(0,1fr) auto!important;gap:8px!important}
+  #app .panel.service-v49 > .product > .product-art {width:44px!important}
+  #app .panel.service-v49 > .product > .service-side {width:96px!important;max-width:96px!important}
+  #app .panel.service-v49 .service-side > button {font-size:11px!important}
 }
-#app .panel:is(.compact-food,.decor-card,.generic-fun-card,.service-v49,.v96-card) > :is(.hihi-food-inset,.service-status,.mini-counter,.catalog-orders) {
-  grid-column:1 / -1!important;
-  clear:both!important;
-}
-@media (max-width:480px) {
-  #app .panel:is(.compact-food,.decor-card,.generic-fun-card,.service-v49,.v96-card) > .product {
-    grid-template-columns:44px minmax(0,1fr) max-content!important;
-    column-gap:8px!important;
-  }
-  #app .panel .product > :is(.v96-actions,.hihi-top-counter,.play-people-stepper) button:not(.hihi-plus-square),
-  #app .panel .product > .service-side .counter button {
-    width:32px!important;height:32px!important;
-    min-width:32px!important;max-width:32px!important;
-    min-height:32px!important;max-height:32px!important;
-    flex-basis:32px!important;
-  }
-}
-/* Long descriptions remain readable without forcing the counter downward. */
-#app .panel .product-text .muted {overflow-wrap:break-word!important;}
-/* Keep independently inset, rounded selected capsules directly below top row. */
-#app .panel .hihi-food-inset {margin-top:10px!important;}
 </style>
 
+<style id="hihi-entertainment-selected-actions-narrow-fix">
+/* Selected service cards keep their descriptions readable on phones.
+   The two textual actions sit side by side BELOW the heading row. */
+@media(max-width:540px){
+ #app .panel.service-v49 > .product:has(> .service-side){
+   grid-template-columns:52px minmax(0,1fr)!important;
+   grid-template-rows:auto auto!important;
+   row-gap:7px!important;
+ }
+ #app .panel.service-v49 > .product:has(> .service-side) > .product-text{
+   grid-column:2!important;grid-row:1!important;
+ }
+ #app .panel.service-v49 > .product > .service-side{
+   grid-column:1 / -1!important;grid-row:2!important;
+   display:flex!important;flex-direction:row!important;
+   justify-self:end!important;align-self:center!important;
+   align-items:center!important;justify-content:flex-end!important;
+   width:auto!important;max-width:100%!important;
+   gap:8px!important;
+ }
+ #app .panel.service-v49 .service-side > button{
+   flex:0 0 auto!important;
+   width:auto!important;min-width:94px!important;
+   max-width:none!important;padding:6px 11px!important;
+ }
+}
+</style>
 </body></html>
