@@ -2280,7 +2280,7 @@ function foodCard(x,i,kind='food'){
  let summary=q?(iceItem?`${q} порц. · ${rub(iceItems.reduce((v,a)=>v+a.qty*a.price,0))}`:`${q} ${x[0]==='Чай'?'чаш.':['Канапе','Блинчики с топпингом'].includes(x[0])||special?'порц.':'шт.'} · ${rub(q*x[1])}`):'';
  let add=special?`inlineQtyOpen('${pickKind}',${i})`:`put(${attr(id)},${attr(x[0])},${x[1]},1,${attr(kind==='food'||kind==='drink'?table:kind)},{linked:false,unit:'шт.'})`;
  let controls=editing?'':(!q?`<button class="inline-open" aria-label="Добавить" onclick="${add}">+</button>`:`<div class="counter hihi-top-counter"><button aria-label="Уменьшить" onclick="change(${attr(iceItem?iceItem.id:id)},-1)">−</button><b>${q}</b><button aria-label="Добавить" onclick="change(${attr(iceItem?iceItem.id:id)},1)">+</button></div>`);
- return `<article class="panel compact-food v96-card ${q?'has-order':'not-ordered'} ${editing?'is-picking':''}"><div class="product"><div class="product-art ${x[0]==='Чай'?'tea-art':''} ${x[0]==='Чай'&&table==='child'?'child-tea-art':''}">${iconFor(x[3],x[0])}</div><div class="product-text"><h3>${esc(x[0])}</h3><div class="muted">${esc(x[2]||'')}</div><div class="price">${rub(x[1])}</div></div><div class="v96-actions">${controls}</div></div>${q?`<div class="v96-selected"><span class="hihi-selected-description">${hihiSelectedLine(summary)}</span><button class="order-del pizza-order-close hihi-unified-close" aria-label="Убрать позицию" onclick="removeFoodSelection(${attr(iceItem?iceItem.id:id)})">×</button></div>`:''}${special?inlineQtyBlock(pickKind,i):''}</article>`
+ return `<article class="panel compact-food v96-card ${q?'has-order':'not-ordered'} ${editing?'is-picking':''}"><div class="product"><div class="product-art ${x[0]==='Чай'?'tea-art':''} ${x[0]==='Чай'&&table==='child'?'child-tea-art':''}">${iconFor(x[3],x[0])}</div><div class="product-text"><h3>${esc(x[0])}</h3><div class="muted">${esc(x[2]||'')}</div><div class="price">${rub(x[1])}</div></div><div class="v96-actions">${controls}</div></div>${q?`<div class="hihi-food-inset"><div class="v96-selected"><span class="hihi-selected-description">${hihiSelectedLine(summary)}</span><button class="order-del pizza-order-close hihi-unified-close" aria-label="Убрать позицию" onclick="removeFoodSelection(${attr(iceItem?iceItem.id:id)})">×</button></div></div>`:''}${special?inlineQtyBlock(pickKind,i):''}</article>`
 }
 function tiles(){return `<div class="tiles"><button class="tile" onclick="table='child';go('table')"><span class="emoji">${iconFor('🍕')}</span><strong>Детский<br>стол</strong></button><button class="tile" onclick="table='adult';go('table')"><span class="emoji">${iconFor('☕')}</span><strong>Стол<br>родителей</strong></button><button class="tile" onclick="go('fun')"><span class="emoji">${iconFor('🎮')}</span><strong>Развлечения<br>и программы</strong></button><button class="tile" onclick="go('decor')"><span class="emoji">${iconFor('🎈')}</span><strong>Оформление<br>и декор</strong></button></div>`}
 function countCard(id,name,price,kind,unit='шт.',desc=''){let q=qty(id);return `<article class="panel compact-food coffee-food ${q?'has-order':'not-ordered'}"><div class="product"><div class="product-art">${iconFor('☕',name)}</div><div class="product-text"><h3>${esc(name)}</h3><div class="muted">${esc(desc)}</div><div class="price">${rub(price)}</div></div></div><div class="coffee-actions">${q?`<button class="flavor-remove" onclick="removeSelected(${attr(id)})">Убрать</button>`:''}<div class="counter"><button onclick="change(${attr(id)},-1)" ${q?'':'disabled'}>−</button><b>${q}</b><button onclick="put(${attr(id)},${attr(name)},${price},1,${attr(kind)},{unit:${attr(unit)}})">+</button></div></div></article>`}
@@ -2864,4 +2864,255 @@ try{render()}catch(e){document.getElementById('app').innerHTML='<div class="wrap
  }
  #app .panel .hihi-top-counter,#app .panel .v96-actions .counter,#app .panel .play-people-stepper{gap:5px!important;}
 }
-</style></body></html>
+</style>
+<style id="hihi-final-inset-capsules-20261121">
+/* All selections are independent inset rounded capsules, including the food menu. */
+#app .panel:has(> .v96-selected),
+#app .panel:has(> .catalog-orders),
+#app .panel:has(> .service-status),
+#app .panel:has(> .mini-counter.hihi-summary-bar) {
+  box-sizing:border-box!important;
+  padding:12px 14px!important;
+  overflow:visible!important;
+  border-radius:22px!important;
+}
+#app .panel.compact-food:has(> .v96-selected) > .v96-selected,
+#app .panel:has(> .catalog-orders) > .catalog-orders > :is(.order-detail,.pizza-order-row,.v96-volume-summary),
+#app .panel:has(> .catalog-orders) > .catalog-orders > .pizza-summary,
+#app .panel:has(> .service-status) > .service-status:has(.selected),
+#app .panel:has(> .mini-counter.hihi-summary-bar) > .mini-counter.hihi-summary-bar {
+  position:relative!important;
+  inset:auto!important;
+  float:none!important;
+  transform:none!important;
+  box-sizing:border-box!important;
+  width:100%!important;
+  max-width:100%!important;
+  min-width:0!important;
+  margin:10px 0 0!important;
+  padding:10px 13px!important;
+  border:0!important;
+  border-radius:16px!important;
+  background:#d9f7e8!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:8px!important;
+  min-height:48px!important;
+  height:auto!important;
+  color:#17653e!important;
+  box-shadow:none!important;
+}
+#app .panel:has(> .catalog-orders) > .catalog-orders {
+ display:flex!important;flex-direction:column!important;
+ width:100%!important;max-width:100%!important;
+ margin:0!important;padding:0!important;gap:0!important;
+}
+#app .panel:has(> .v96-selected) > .v96-selected > .hihi-selected-description,
+#app .panel:has(> .catalog-orders) .hihi-selected-description,
+#app .panel:has(> .mini-counter.hihi-summary-bar) .pill.selected,
+#app .panel:has(> .service-status) .pill.selected {
+ position:static!important;display:flex!important;align-items:center!important;
+ flex:1 1 auto!important;align-self:stretch!important;width:auto!important;
+ min-width:0!important;margin:0!important;padding:0!important;
+ background:transparent!important;border:0!important;box-shadow:none!important;
+ font-family:inherit!important;font-size:14px!important;font-weight:400!important;line-height:1.4!important;color:#17653e!important;
+}
+#app .panel:has(> .v96-selected) > .v96-selected > button,
+#app .panel:has(> .catalog-orders) .catalog-orders .order-del,
+#app .panel:has(> .mini-counter.hihi-summary-bar) .hihi-summary-close {
+ position:static!important;inset:auto!important;transform:none!important;
+ box-sizing:border-box!important;display:grid!important;place-items:center!important;
+ flex:0 0 35px!important;width:35px!important;min-width:35px!important;height:35px!important;
+ margin:0 0 0 auto!important;padding:0!important;
+ border:1px solid #ff98b4!important;border-radius:11px!important;
+ background:#fff0f4!important;color:#c21b59!important;
+ font-size:23px!important;font-weight:800!important;line-height:1!important;
+}
+/* Side-by-side counters occupy the right-hand fuchsia-add-button column. */
+#app .panel.compact-food > .product > .v96-actions,
+#app .panel.decor-card > .product > .hihi-top-counter,
+#app .panel.generic-fun-card > .product > .hihi-top-counter {
+ justify-self:end!important;align-self:center!important;
+ margin:0!important;padding:0!important;position:static!important;
+}
+</style>
+
+<style id="hihi-structural-inset-and-mobile-20261122">
+/* Keep the selected pill physically inside a white inset frame. Historical
+   direct-child/full-bleed rules cannot reach through this wrapper. */
+#app .panel.compact-food.v96-card { padding:13px 14px!important; box-sizing:border-box!important; overflow:visible!important; }
+#app .panel.compact-food.v96-card > .hihi-food-inset {
+ display:block!important; position:relative!important; width:100%!important;
+ min-width:0!important; margin:11px 0 0!important; padding:0!important;
+ box-sizing:border-box!important; background:transparent!important;
+}
+#app .panel.compact-food.v96-card > .hihi-food-inset > .v96-selected {
+ position:static!important; inset:auto!important; transform:none!important;
+ box-sizing:border-box!important; display:flex!important;
+ align-items:center!important; justify-content:space-between!important;
+ width:100%!important; max-width:100%!important; min-width:0!important;
+ height:auto!important; min-height:50px!important;
+ margin:0!important; padding:10px 13px!important;
+ background:#d9f7e8!important; border-radius:16px!important;
+ border:0!important; box-shadow:none!important; gap:10px!important;
+}
+#app .panel.compact-food.v96-card > .hihi-food-inset > .v96-selected > .hihi-selected-description {
+ display:flex!important; flex:1 1 auto!important; align-items:center!important;
+ min-width:0!important; margin:0!important; padding:0!important;
+ background:transparent!important; color:#17653e!important;
+ font-size:14px!important; line-height:1.4!important; font-weight:400!important;
+}
+#app .panel.compact-food.v96-card > .hihi-food-inset > .v96-selected > .hihi-unified-close {
+ position:static!important; flex:0 0 35px!important;
+ display:grid!important; place-items:center!important;
+ width:35px!important; height:35px!important; min-width:35px!important;
+ padding:0!important; margin:0 0 0 auto!important;
+ background:#fff0f4!important; color:#c21b59!important;
+ border:1px solid #ff98b4!important; border-radius:11px!important;
+ font-size:23px!important; font-weight:800!important; line-height:1!important;
+}
+/* Product names should never be squeezed into a one-word-wide column. */
+#app .panel:is(.decor-card,.generic-fun-card,.compact-food,.service-v49) > .product > .product-text {
+ min-width:0!important; max-width:none!important; overflow-wrap:normal!important;
+}
+@media(max-width:600px){
+ #app .panel:is(.decor-card,.generic-fun-card,.compact-food,.service-v49):has(> .product > :is(.hihi-top-counter,.v96-actions,.play-people-stepper)) > .product {
+  display:grid!important;
+  grid-template-columns:58px minmax(0,1fr)!important;
+  grid-template-rows:auto auto!important;
+  column-gap:10px!important; row-gap:6px!important;
+  padding:0!important;
+  align-items:center!important;
+ }
+ #app .panel:is(.decor-card,.generic-fun-card,.compact-food,.service-v49) > .product > .product-art {
+  grid-column:1!important; grid-row:1!important; min-width:0!important;
+ }
+ #app .panel:is(.decor-card,.generic-fun-card,.compact-food,.service-v49) > .product > .product-text {
+  grid-column:2!important; grid-row:1!important; width:100%!important;
+  min-width:0!important; max-width:none!important;
+ }
+ #app .panel:is(.decor-card,.generic-fun-card,.compact-food,.service-v49) > .product > :is(.hihi-top-counter,.v96-actions,.play-people-stepper) {
+  grid-column:2!important; grid-row:2!important;
+  justify-self:end!important; align-self:center!important;
+  margin:0!important; padding:0!important; position:static!important;
+ }
+ /* When no quantity counter is showing, retain the original single-row add button. */
+ #app .panel:is(.decor-card,.generic-fun-card,.compact-food,.service-v49) > .product > .v96-actions:has(>.inline-open){
+  grid-column:2!important;grid-row:1!important;justify-self:end!important;
+ }
+ #app .panel:is(.decor-card,.generic-fun-card,.compact-food,.service-v49) > .product:has(.inline-open) > .product-text{padding-right:52px!important;box-sizing:border-box!important}
+ #app .panel .product-text h3{overflow-wrap:normal!important;word-break:normal!important}
+}
+</style>
+
+<style id="hihi-footer-selected-plus-unification-20261122">
+/* One fixed coordinate system for the bottom action panel.
+   The child must not also be position:fixed inside its fixed host. */
+html, body { min-height:100%; }
+body { overflow-x:clip; }
+body > #bottom {
+  position:fixed!important;
+  inset:auto 0 0 0!important;
+  width:100%!important;
+  height:auto!important;
+  margin:0!important;
+  padding:0!important;
+  transform:none!important;
+  z-index:100!important;
+  pointer-events:none!important;
+}
+body > #bottom > .bottom {
+  position:relative!important;
+  inset:auto!important;
+  left:auto!important;
+  right:auto!important;
+  bottom:auto!important;
+  top:auto!important;
+  transform:none!important;
+  box-sizing:border-box!important;
+  width:100%!important;
+  max-width:100%!important;
+  margin:0!important;
+  pointer-events:auto!important;
+}
+#app { padding-bottom:calc(var(--hihi-footer-height, 145px) + 22px)!important; }
+
+/* All selected entertainment/service capsules use an inset, rounded surface. */
+#app .panel:is(.generic-fun-card,.service-v49,.decor-card):has(> .service-status),
+#app .panel:is(.generic-fun-card,.service-v49,.decor-card):has(> .mini-counter.hihi-summary-bar) {
+  padding:12px 14px!important;
+  overflow:visible!important;
+}
+#app .panel:is(.generic-fun-card,.service-v49,.decor-card) > .service-status:has(.selected),
+#app .panel:is(.generic-fun-card,.service-v49,.decor-card) > .mini-counter.hihi-summary-bar {
+  box-sizing:border-box!important;
+  position:relative!important;
+  inset:auto!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:10px!important;
+  width:100%!important;
+  min-height:50px!important;
+  height:auto!important;
+  margin:11px 0 0!important;
+  padding:10px 13px!important;
+  border-radius:16px!important;
+  border:0!important;
+  background:#d9f7e8!important;
+  transform:none!important;
+}
+#app .panel:is(.generic-fun-card,.service-v49,.decor-card) > .service-status:has(.selected) > *,
+#app .panel:is(.generic-fun-card,.service-v49,.decor-card) > .mini-counter.hihi-summary-bar > * {
+  align-self:center!important;
+}
+#app .panel:is(.generic-fun-card,.service-v49,.decor-card) > .service-status .pill.selected,
+#app .panel:is(.generic-fun-card,.service-v49,.decor-card) > .mini-counter.hihi-summary-bar .pill.selected {
+  display:flex!important;
+  align-items:center!important;
+  min-height:35px!important;
+  margin:0!important;
+  padding:0!important;
+  line-height:1.4!important;
+  background:transparent!important;
+  border:0!important;
+}
+#app .panel:is(.generic-fun-card,.service-v49,.decor-card) > .service-status .remove-selected,
+#app .panel:is(.generic-fun-card,.service-v49,.decor-card) > .mini-counter.hihi-summary-bar .hihi-summary-close {
+  align-self:center!important;
+  margin-top:0!important;
+  margin-bottom:0!important;
+}
+
+/* Exactly the same square fuchsia add control on each product card. */
+#app .panel .product > button.inline-open,
+#app .panel .product > button.service-select,
+#app .panel .product > .v96-actions > button.inline-open,
+#app .panel > .mini-counter button.inline-open,
+#app .panel .product > .service-side > button.inline-open {
+  box-sizing:border-box!important;
+  display:grid!important;
+  place-items:center!important;
+  flex:0 0 44px!important;
+  width:44px!important;
+  min-width:44px!important;
+  max-width:44px!important;
+  height:44px!important;
+  min-height:44px!important;
+  max-height:44px!important;
+  padding:0!important;
+  margin:0!important;
+  border-radius:12px!important;
+  border:0!important;
+  background:#f50098!important;
+  color:#fff!important;
+  font-size:26px!important;
+  font-weight:800!important;
+  line-height:1!important;
+  text-align:center!important;
+  aspect-ratio:1!important;
+}
+</style>
+
+</body></html>
