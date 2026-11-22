@@ -2213,7 +2213,7 @@ const PIZZA=['Маргарита','С ветчиной','Пепперони','С
 const JUICE=['Яблочный','Клубничный','Мультифрукт','Вишнёвый','Персиковый','Апельсиновый'];
 const THEMES={'До 5 лет':['Зайчик и лисичка','Лунтик и Мила','Приключения Буратино','Свинка Пеппа','Три кота','Фиксики','Вспыш','Барбоскины','Мимимишки','Маша и медведь'],'5–7 лет':['Алиса в стране чудес','Винкс','Вокруг света','Тролли','Холодное сердце','Щенячий патруль','Корпорация монстров','Миньоны','Микки и Минни Маус','Индейцы','Куклы LOL','Новогодняя сказка','Энгри Бёрдс','Дино-пати','Литтл пони','Как приручить дракона','Барби'],'7–9 лет':['Космические приключения','Пираты','Майнкрафт','Пикачу','Супер-кот и Леди Баг','Черепашка ниндзя','Бэтмен','Человек-паук','Флэш'],'От 9 лет':['Гарри Поттер','Тик-ток','Венсдей и Энид','Хагги Ваги','Вампир и ведьма','Джокер и Харли Квин','Рок вечеринка']};
 const FOODS=[['Картофель фри',150,'100 г','🍟',true],['Картофель по-деревенски',150,'100 г','🥔',true],['Канапе',120,'2 шт. · ветчина, сыр, виноград, хлеб','🥪',true],['Мясная нарезка',800,'300 г','🥩',false],['Сырная тарелка',750,'300 г','🧀',false],['Свежие овощи',550,'400 г','🥒',false],['Фруктовое ассорти',700,'700 г','🍇',false],['Блинчики с топпингом',150,'2 шт. · топпинг на выбор','🥞',true],['Сладкий набор',700,'500 г','🍬',false],['Мороженое',100,'1 шарик','🍨',false],['Детское шампанское',450,'0,75 л','🍾',false]];
-const SERVICES=[['Анимационная программа',4500,'1 час','🎭','theme'],['Программы для подростков',5500,'1 час','🗺️','teen'],['Бумажное шоу',5500,'30 мин · серебряное или неоновое','🎊','paper'],['Поролоновое шоу',4000,'30 мин','🫧'],['Шоу мыльных пузырей',4500,'30 мин','🫧'],['Пиньята с конфетами',3000,'','🪅'],['Аквагрим',300,'1 человек','🎨'],['Блеск-тату',300,'1 человек','⭐'],['Шар для моделирования',50,'1 шт.','🎈'],['Игровая комната',150,'1 чел. / 30 мин','🧸','play'],['Мафия',3500,'1 час','🃏'],['Настольные игры',3000,'1 час','🎲'],['Дискотека с мыльными пузырями',2500,'30 мин','🪩'],['Дискотека с караоке',2500,'30 мин','🎤']];
+const SERVICES=[['Анимационная программа',4500,'1 час','🎭','theme'],['Программы для подростков',5500,'1 час','🗺️','teen'],['Бумажное шоу',5500,'30 мин. · серебряное или неоновое','🎊','paper'],['Поролоновое шоу',4000,'30 мин.','🫧'],['Шоу мыльных пузырей',4500,'30 мин.','🫧'],['Пиньята с конфетами',3000,'','🪅'],['Аквагрим',300,'1 человек','🎨'],['Блеск-тату',300,'1 человек','⭐'],['Шар для моделирования',50,'1 шт.','🎈'],['Игровая комната',150,'1 чел. / 30 мин.','🧸','play'],['Мафия',3500,'1 час','🃏'],['Настольные игры',3000,'1 час','🎲'],['Дискотека с мыльными пузырями',2500,'30 мин.','🪩'],['Дискотека с караоке',2500,'30 мин.','🎤']];
 const DECOR=[['Шар с надписью',150,'С гелием','🎈'],['Шар «Цифра»',750,'С гелием','🔢'],['Шар «Звезда / сердце»',350,'С гелием','💖'],['Шар «Фигура»',650,'С гелием','🎈'],['Композиция «Цифра»',2000,'Цифра без гелия, подложка и 7 гелиевых шаров','🎁'],['Свеча-фонтан',120,'1 шт.','🕯️']];
 const COFFEE=[['Эспрессо',75,'60 мл','☕'],['Американо',120,'180 мл','☕'],['Капучино',150,'180 мл','☕'],['Латте',200,'300 мл','☕'],['Глясе',180,'180 мл','☕']];
 const STORE='hihi-miniapp-candy-v3';let state={kids:0,cart:{}};try{let s=JSON.parse(localStorage.getItem(STORE));if(s&&typeof s==='object'&&s.cart&&typeof s.cart==='object')state=s}catch(e){};let screen=state.kids?'home':'welcome',table='child',flow={},returnScreen='home',editId=null,modal=null;
@@ -2267,7 +2267,7 @@ function hihiSelectedLine(raw){
  line=line.replace(/\s*·\s*/g,' · ').replace(/\s*[-–—]\s*(?=[\d\s\u00a0]+₽\s*$)/,' · ');
  const m=line.match(/^(.*?)(?:\s*·\s*)?([\d\s\u00a0]+\s*₽)\s*$/);
  if(!m)return `<span class="hihi-selected-info">${line}</span>`;
- return `<span class="hihi-selected-info">${m[1].trim().replace(/\s*·\s*$/,'')}</span><span class="hihi-selected-price"> - <strong>${m[2].trim()}</strong></span>`;
+ return `<span class="hihi-selected-info">${m[1].trim().replace(/\s*·\s*$/,'')}</span><span class="hihi-selected-price"> · <strong>${m[2].trim()}</strong></span>`;
 }
 function foodCard(x,i,kind='food'){
  let special=['Картофель фри','Картофель по-деревенски','Мороженое','Чай'].includes(x[0]);
@@ -2419,10 +2419,10 @@ function serviceSpecialCard(x,i){
  if(a&&!fixed){
   if(anim)extras=`<div class="animation-extras"><div class="extra-pair"><button onclick="animationExtra('hour',1)">+1 час · ${rub(base)}</button>${a.extraHours?`<button class="extra-minus" onclick="animationExtra('hour',-1)">−1 час</button>`:''}</div><div class="extra-pair"><button onclick="animationExtra('hero',1)">+1 герой · 1 000 ₽</button>${a.extraHeroes?`<button class="extra-minus" onclick="animationExtra('hero',-1)">−1 герой</button>`:''}</div></div>`;
   else if(teen)extras=`<div class="animation-extras"><div class="extra-pair"><button onclick="teenHours(1)">+1 час · ${rub(base)}</button>${periods>1?`<button class="extra-minus" onclick="teenHours(-1)">−1 час</button>`:''}</div><div class="extra-pair"><button onclick="teenHost(1)">+1 ведущий · 1 000 ₽</button>${a.extraHosts?`<button class="extra-minus" onclick="teenHost(-1)">−1 ведущий</button>`:''}</div></div>`;
-  else if(play)extras=`<div class="play-controls"><div class="animation-extras play-time-controls"><div class="extra-pair"><button onclick="playExtra(1)">+30 мин</button>${periods>1?`<button class="extra-minus" onclick="playExtra(-1)">−30 мин</button>`:''}</div></div></div>`;
-  else extras=`<div class="animation-extras"><div class="extra-pair"><button onclick="durationChange(${attr(name)},1)">+${minutes===60?'1 час':'30 мин'} · ${rub(base)}</button>${periods>1?`<button class="extra-minus" onclick="durationChange(${attr(name)},-1)">−${minutes===60?'1 час':'30 мин'}</button>`:''}</div></div>`;
+  else if(play)extras=`<div class="play-controls"><div class="animation-extras play-time-controls"><div class="extra-pair"><button onclick="playExtra(1)">+30 мин.</button>${periods>1?`<button class="extra-minus" onclick="playExtra(-1)">−30 мин.</button>`:''}</div></div></div>`;
+  else extras=`<div class="animation-extras"><div class="extra-pair"><button onclick="durationChange(${attr(name)},1)">+${minutes===60?'1 час':'30 мин.'} · ${rub(base)}</button>${periods>1?`<button class="extra-minus" onclick="durationChange(${attr(name)},-1)">−${minutes===60?'1 час':'30 мин.'}</button>`:''}</div></div>`;
  }
- return `<div class="panel service-v49"><div class="product"><div class="product-art">${iconFor(x[3],name)}</div><div class="product-text"><h3>${esc(name)}</h3><div class="muted">${play?'1 чел. / 30 мин':esc(x[2])}</div><div class="price">${rub(base)}</div></div>${!a?`<button class="service-select" aria-label="Добавить" onclick="${select}">+</button>`:''}${a?`<div class="service-side"><button class="service-change service-remove-text" onclick="removeService(${attr(anim?'fun|Анимационная программа':teen?a.id:paper?'fun|Бумажное шоу':'fun|'+name)})" aria-label="Убрать позицию" title="Убрать позицию">Убрать</button>${anim||teen||paper?`<button class="service-change" onclick="${select}">Заменить</button>`:''}</div>`:''}</div><div class="service-status" ${!a?'style="display:none"':''}><span class="pill ${a?'selected':''}">${hihiSelectedLine(label)}</span>${play&&a?`<div class="stepper play-people-stepper"><button type="button" onclick="playPeople(-1)" ${a.qty<=1?'disabled':''}>−</button><strong>${a.qty}</strong><button type="button" onclick="playPeople(1)">+</button></div>`:''}</div>${paper&&paperPickerOpen?`<div class="paper-inline-control"><div class="paper-icon-choices"><button type="button" class="paper-icon-choice" onclick="paperShowAdd(0)"><img src="${CATALOG_ICONS['Серебряная бумага']}" alt=""><span><strong>Серебряная бумага</strong><small>Блестит и переливается, отражая свет</small></span></button><button type="button" class="paper-icon-choice" onclick="paperShowAdd(1)"><img src="${CATALOG_ICONS['Неоновая бумага']}" alt=""><span><strong>Неоновая бумага</strong><small>Ярко светится в ультрафиолетовом свете</small></span></button></div></div>`:''}${extras}${play&&!a?inlineQtyBlock('fun',i):''}</div>`;
+ return `<div class="panel service-v49"><div class="product"><div class="product-art">${iconFor(x[3],name)}</div><div class="product-text"><h3>${esc(name)}</h3><div class="muted">${play?'1 чел. / 30 мин.':esc(x[2])}</div><div class="price">${rub(base)}</div></div>${!a?`<button class="service-select" aria-label="Добавить" onclick="${select}">+</button>`:''}${a?`<div class="service-side"><button class="service-change service-remove-text" onclick="removeService(${attr(anim?'fun|Анимационная программа':teen?a.id:paper?'fun|Бумажное шоу':'fun|'+name)})" aria-label="Убрать позицию" title="Убрать позицию">Убрать</button>${anim||teen||paper?`<button class="service-change" onclick="${select}">Заменить</button>`:''}</div>`:''}</div><div class="service-status" ${!a?'style="display:none"':''}><span class="pill ${a?'selected':''}">${hihiSelectedLine(label)}</span>${play&&a?`<div class="stepper play-people-stepper"><button type="button" onclick="playPeople(-1)" ${a.qty<=1?'disabled':''}>−</button><strong>${a.qty}</strong><button type="button" onclick="playPeople(1)">+</button></div>`:''}</div>${paper&&paperPickerOpen?`<div class="paper-inline-control"><div class="paper-icon-choices"><button type="button" class="paper-icon-choice" onclick="paperShowAdd(0)"><img src="${CATALOG_ICONS['Серебряная бумага']}" alt=""><span><strong>Серебряная бумага</strong><small>Блестит и переливается, отражая свет</small></span></button><button type="button" class="paper-icon-choice" onclick="paperShowAdd(1)"><img src="${CATALOG_ICONS['Неоновая бумага']}" alt=""><span><strong>Неоновая бумага</strong><small>Ярко светится в ультрафиолетовом свете</small></span></button></div></div>`:''}${extras}${play&&!a?inlineQtyBlock('fun',i):''}</div>`;
 }
 function cartScreen(){let h=navigation('home')+`<h2 class="screen-title">Моя смета</h2>`;if(!items().length)h+=`<div class="panel empty"><div class="big"><img class="cart-empty-icon" src="${LINE_UI_ICONS.cart}" alt=""></div><h3>Пока ничего нет</h3><p>Добавьте угощения или развлечения</p><button class="action" onclick="go('home')">Выбрать товары</button></div>`;for(const kind of ['child','adult','fun','decor']){let list=items().filter(x=>x.kind===kind);if(!list.length)continue;h+=`<div class="section-title"><h2 class="cart-section-heading"><img src="${NEW_UI_ICONS[kind==='child'?'child':kind==='adult'?'adult':kind==='fun'?'fun':'decor']}" alt="">${catLabel(kind)}</h2></div><div class="panel">`;for(const x of list)h+=`<button class="cart-line cart-edit-direct" onclick="editId=${attr(x.id)};go('edit')"><div class="row"><div><strong>${esc(x.name)}</strong><div class="detail">${x.qty} ${['Аквагрим','Блеск-тату'].some(n=>x.name.startsWith(n))?'чел.':esc(x.unit||'шт.')} × ${rub(x.price)}${x.blocks>1?' × '+x.blocks+' периодов':''}</div></div><span class="sum">${rub(x.qty*x.price*(x.blocks||1))}</span></div></button>`;h+='</div>'}h+=`<div class="total-card"><div class="row"><span>Итого за праздник</span><strong>${rub(total())}</strong></div><small>Предварительный расчёт · не является бронированием</small></div><div class="actions"><button class="action blue" onclick="go('home')">＋ Добавить</button><button class="action soft" onclick="confirmKidsEdit()">Изменить количество детей</button></div><button class="action wide" style="margin-top:13px" onclick="go('request')">📨 Отправить заявку</button>`;return h}
 let homeMenuOpen=false;function toggleHomeMenu(){homeMenuOpen=!homeMenuOpen;renderKeepScroll()}
@@ -3113,6 +3113,285 @@ body > #bottom > .bottom {
   text-align:center!important;
   aspect-ratio:1!important;
 }
+</style>
+
+
+<style id="hihi-card-layout-repair-20261122">
+/* One aligned compact row for every catalog card: icon / text / action. */
+#app .panel:is(.decor-card,.generic-fun-card,.compact-food,.service-v49) > .product,
+#app .panel.v96-card > .product,
+#app .panel:has(> .catalog-orders) > .product {
+  display:grid!important;
+  grid-template-columns:58px minmax(0,1fr) auto!important;
+  grid-template-rows:auto!important;
+  align-items:center!important;
+  column-gap:10px!important;
+  row-gap:0!important;
+  box-sizing:border-box!important;
+  width:100%!important;
+  min-height:70px!important;
+  height:auto!important;
+  margin:0!important;
+  padding:0!important;
+}
+#app .panel:is(.decor-card,.generic-fun-card,.compact-food,.service-v49) > .product > .product-art,
+#app .panel.v96-card > .product > .product-art {
+  grid-column:1!important;grid-row:1!important;position:static!important;
+  min-width:0!important;align-self:center!important;
+}
+#app .panel:is(.decor-card,.generic-fun-card,.compact-food,.service-v49) > .product > .product-text,
+#app .panel.v96-card > .product > .product-text {
+  grid-column:2!important;grid-row:1!important;align-self:center!important;
+  min-width:0!important;max-width:100%!important;width:auto!important;
+  padding:0!important;margin:0!important;
+  overflow-wrap:break-word!important;
+}
+#app .panel:is(.decor-card,.generic-fun-card,.compact-food,.service-v49) > .product > :is(.hihi-top-counter,.v96-actions,.play-people-stepper,.inline-open,.service-side,.service-select),
+#app .panel.v96-card > .product > .v96-actions,
+#app .panel.v96-card > .product > .hihi-top-counter {
+  grid-column:3!important;grid-row:1!important;
+  align-self:center!important;justify-self:end!important;
+  position:static!important;inset:auto!important;transform:none!important;
+  width:auto!important;max-width:none!important;height:auto!important;
+  margin:0!important;padding:0!important;
+}
+#app .panel.v96-card.has-order > .product {padding-right:0!important;}
+#app .panel .product > .v96-actions,
+#app .panel .product > .hihi-top-counter,
+#app .panel .product > .play-people-stepper {
+  display:flex!important;align-items:center!important;justify-content:flex-end!important;
+  flex-wrap:nowrap!important;gap:7px!important;
+}
+#app .panel .product > .v96-actions:empty{display:none!important;}
+#app .panel .product > .hihi-top-counter button,
+#app .panel .product > .v96-actions .counter button,
+#app .panel .product > .play-people-stepper button {
+  box-sizing:border-box!important;width:34px!important;height:34px!important;
+  min-width:34px!important;max-width:34px!important;
+  min-height:34px!important;max-height:34px!important;
+  flex:0 0 34px!important;padding:0!important;
+  display:grid!important;place-items:center!important;
+  border-radius:11px!important;line-height:1!important;
+}
+#app .panel .product > .hihi-top-counter b,
+#app .panel .product > .v96-actions .counter b,
+#app .panel .product > .play-people-stepper strong {
+  display:block!important;min-width:18px!important;margin:0!important;
+  line-height:1.2!important;text-align:center!important;
+}
+/* Cards not yet selected must not acquire blank product-summary space. */
+#app .panel .hihi-empty-selection,
+#app .panel .mini-counter.hihi-empty-selection {display:none!important;height:0!important;min-height:0!important;}
+/* Uniform action buttons across all sections; markers added only to actual '+' and '×' buttons. */
+#app button.hihi-plus-square {
+  box-sizing:border-box!important;display:grid!important;place-items:center!important;
+  position:static!important;inset:auto!important;transform:none!important;
+  width:44px!important;height:44px!important;min-width:44px!important;min-height:44px!important;
+  max-width:44px!important;max-height:44px!important;
+  flex:0 0 44px!important;aspect-ratio:1!important;
+  border:0!important;border-radius:12px!important;
+  margin:0!important;padding:0!important;
+  background:#f50098!important;background-image:none!important;color:#fff!important;
+  font-size:26px!important;font-weight:800!important;line-height:1!important;
+  text-align:center!important;vertical-align:middle!important;
+}
+#app button.hihi-close-square {
+  box-sizing:border-box!important;display:grid!important;place-items:center!important;
+  position:static!important;inset:auto!important;transform:none!important;
+  width:36px!important;height:36px!important;min-width:36px!important;min-height:36px!important;
+  max-width:36px!important;max-height:36px!important;
+  flex:0 0 36px!important;aspect-ratio:1!important;
+  border:1px solid #ff98b4!important;border-radius:11px!important;
+  margin:0 0 0 auto!important;padding:0!important;
+  background:#fff0f4!important;background-image:none!important;color:#c21b59!important;
+  font-size:23px!important;font-weight:800!important;line-height:1!important;
+  text-align:center!important;
+}
+/* Every green selected summary is an independent, inset, vertically centered capsule. */
+#app .panel:is(.generic-fun-card,.decor-card,.service-v49,.compact-food) > :is(.mini-counter.hihi-summary-bar,.service-status):has(.selected),
+#app .panel.compact-food > .hihi-food-inset > .v96-selected,
+#app .panel .catalog-orders > :is(.order-detail,.pizza-order-row,.v96-volume-summary),
+#app .panel .catalog-orders > .pizza-summary {
+  box-sizing:border-box!important;display:flex!important;align-items:center!important;
+  justify-content:space-between!important;min-height:50px!important;height:auto!important;
+  width:100%!important;max-width:100%!important;
+  padding:9px 12px!important;margin:10px 0 0!important;
+  border-radius:16px!important;background:#d9f7e8!important;
+  border:0!important;gap:10px!important;
+}
+#app .panel:is(.generic-fun-card,.decor-card,.service-v49,.compact-food) > :is(.mini-counter.hihi-summary-bar,.service-status):has(.selected) > *,
+#app .panel.compact-food > .hihi-food-inset > .v96-selected > * {
+  align-self:center!important;
+}
+@media(max-width:480px){
+ #app .panel:is(.decor-card,.generic-fun-card,.compact-food,.service-v49) > .product,
+ #app .panel.v96-card > .product {grid-template-columns:48px minmax(0,1fr) auto!important;column-gap:8px!important;}
+ #app .panel .product > .hihi-top-counter,
+ #app .panel .product > .v96-actions .counter {gap:5px!important;}
+ #app .panel .product > .hihi-top-counter button,
+ #app .panel .product > .v96-actions .counter button {width:32px!important;height:32px!important;min-width:32px!important;min-height:32px!important;max-width:32px!important;max-height:32px!important;flex-basis:32px!important;}
+ #app .panel .product > .hihi-top-counter b,
+ #app .panel .product > .v96-actions .counter b {min-width:16px!important;}
+}
+</style>
+<script id="hihi-action-marker-20261122">
+(function(){
+ const root=document.getElementById('app');if(!root)return;
+ function mark(){
+   root.querySelectorAll('button').forEach(function(btn){
+     const t=(btn.textContent||'').trim();
+     const counter=!!btn.closest('.counter,.hihi-top-counter,.stepper,.play-people-stepper,.quantity-picker');
+     btn.classList.toggle('hihi-plus-square',t==='+'&&(!counter||btn.classList.contains('inline-open')));
+     const close= t==='×'||t==='✕'||t==='✖';
+     btn.classList.toggle('hihi-close-square',close&&!!btn.closest('.hihi-summary-bar,.v96-selected,.catalog-orders,.service-status,.pizza-summary'));
+   });
+ }
+ let inMark=false;
+ const observer=new MutationObserver(function(){if(inMark)return;inMark=true;mark();inMark=false});
+ observer.observe(root,{childList:true,subtree:true});mark();
+})();
+</script>
+
+<style id="hihi-square-action-final-priority">
+#app .panel .product button.hihi-plus-square,
+#app .panel .product .hihi-top-counter button.hihi-plus-square,
+#app .panel .product .v96-actions button.hihi-plus-square {
+ box-sizing:border-box!important;display:grid!important;place-items:center!important;
+ width:44px!important;min-width:44px!important;max-width:44px!important;
+ height:44px!important;min-height:44px!important;max-height:44px!important;
+ flex:0 0 44px!important;aspect-ratio:1!important;
+ padding:0!important;margin:0!important;border:0!important;border-radius:12px!important;
+ background:#f50098!important;color:#fff!important;font-size:26px!important;line-height:1!important;
+}
+</style>
+
+<script id="hihi-selected-middle-dot-20261122">
+(function(){
+ const root=document.getElementById('app');
+ if(!root)return;
+ const selectors='.hihi-summary-bar,.service-status .pill.selected,.v96-selected,.catalog-orders,.mini-counter .pill.selected,.hihi-selected-price,.hihi-selected-description';
+ function normalize(){
+  root.querySelectorAll(selectors).forEach(function(element){
+   const walker=document.createTreeWalker(element,NodeFilter.SHOW_TEXT);
+   let node;
+   while((node=walker.nextNode())){
+    const old=node.nodeValue;
+    const next=old.replace(/\s*[-–—]\s*(?=\d[\d\s\u00a0]*₽)/g,' · ')
+                  .replace(/(\d+)\s+мин(?![.\p{L}])/gu,'$1 мин.');
+    if(next!==old)node.nodeValue=next;
+   }
+  });
+ }
+ let working=false;
+ const observer=new MutationObserver(function(){
+  if(working)return;
+  working=true;normalize();working=false;
+ });
+ observer.observe(root,{childList:true,subtree:true});normalize();
+})();
+</script>
+
+<style id="hihi-approved-compact-counter-layout-20261122">
+/* Approved compact card layout: icon / description / counter, in one row. */
+#app .panel:is(.compact-food,.decor-card,.generic-fun-card,.service-v49,.v96-card) > .product {
+  display:grid!important;
+  grid-template-columns: clamp(42px, 12vw, 58px) minmax(0, 1fr) max-content!important;
+  grid-template-rows:auto!important;
+  gap:10px!important;
+  align-items:center!important;
+  min-height:68px!important;
+  height:auto!important;
+  padding:0!important;
+  margin:0!important;
+}
+#app .panel:is(.compact-food,.decor-card,.generic-fun-card,.service-v49,.v96-card) > .product > .product-art {
+  grid-column:1!important;
+  grid-row:1!important;
+  align-self:center!important;
+  margin:0!important;
+}
+#app .panel:is(.compact-food,.decor-card,.generic-fun-card,.service-v49,.v96-card) > .product > .product-text {
+  grid-column:2!important;
+  grid-row:1!important;
+  min-width:0!important;
+  width:auto!important;
+  max-width:100%!important;
+  margin:0!important;
+  align-self:center!important;
+  overflow-wrap:break-word!important;
+}
+#app .panel:is(.compact-food,.decor-card,.generic-fun-card,.service-v49,.v96-card) > .product > :is(.v96-actions,.hihi-top-counter,.play-people-stepper,.service-side,.service-select,.inline-open) {
+  grid-column:3!important;
+  grid-row:1!important;
+  justify-self:end!important;
+  align-self:center!important;
+  position:static!important;
+  inset:auto!important;
+  transform:none!important;
+  margin:0!important;
+  padding:0!important;
+  width:max-content!important;
+  max-width:none!important;
+  height:auto!important;
+}
+#app .panel .product > .v96-actions,
+#app .panel .product > .hihi-top-counter,
+#app .panel .product > .play-people-stepper,
+#app .panel .product > .v96-actions > .counter,
+#app .panel .product > .service-side > .counter {
+  flex-wrap:nowrap!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:flex-end!important;
+  gap:6px!important;
+  white-space:nowrap!important;
+  min-width:0!important;
+  position:static!important;
+  transform:none!important;
+}
+#app .panel .product > :is(.v96-actions,.hihi-top-counter,.play-people-stepper) button:not(.hihi-plus-square),
+#app .panel .product > .service-side .counter button {
+  width:34px!important;
+  height:34px!important;
+  min-width:34px!important;
+  max-width:34px!important;
+  min-height:34px!important;
+  max-height:34px!important;
+  flex:0 0 34px!important;
+  border-radius:10px!important;
+  box-sizing:border-box!important;
+  padding:0!important;
+  display:grid!important;
+  place-items:center!important;
+}
+#app .panel .product > :is(.v96-actions,.hihi-top-counter,.play-people-stepper) :is(b,strong,output),
+#app .panel .product > .service-side .counter :is(b,strong,output) {
+  min-width:18px!important;
+  margin:0!important;
+  text-align:center!important;
+  font-variant-numeric:tabular-nums!important;
+}
+#app .panel:is(.compact-food,.decor-card,.generic-fun-card,.service-v49,.v96-card) > :is(.hihi-food-inset,.service-status,.mini-counter,.catalog-orders) {
+  grid-column:1 / -1!important;
+  clear:both!important;
+}
+@media (max-width:480px) {
+  #app .panel:is(.compact-food,.decor-card,.generic-fun-card,.service-v49,.v96-card) > .product {
+    grid-template-columns:44px minmax(0,1fr) max-content!important;
+    column-gap:8px!important;
+  }
+  #app .panel .product > :is(.v96-actions,.hihi-top-counter,.play-people-stepper) button:not(.hihi-plus-square),
+  #app .panel .product > .service-side .counter button {
+    width:32px!important;height:32px!important;
+    min-width:32px!important;max-width:32px!important;
+    min-height:32px!important;max-height:32px!important;
+    flex-basis:32px!important;
+  }
+}
+/* Long descriptions remain readable without forcing the counter downward. */
+#app .panel .product-text .muted {overflow-wrap:break-word!important;}
+/* Keep independently inset, rounded selected capsules directly below top row. */
+#app .panel .hihi-food-inset {margin-top:10px!important;}
 </style>
 
 </body></html>
