@@ -2293,7 +2293,7 @@ function foodCard(x,i,kind='food'){
  let summary=q?(iceItem?`${q} порц. · ${rub(iceItems.reduce((v,a)=>v+a.qty*a.price,0))}`:`${q} ${x[0]==='Чай'?'чаш.':['Канапе','Блинчики с топпингом'].includes(x[0])||special?'порц.':'шт.'} · ${rub(q*x[1])}`):'';
  let add=special?`inlineQtyOpen('${pickKind}',${i})`:`put(${attr(id)},${attr(x[0])},${x[1]},1,${attr(kind==='food'||kind==='drink'?table:kind)},{linked:false,unit:'шт.'})`;
  let controls=editing?'':(x[0]==='Мороженое'?`<button class="inline-open" aria-label="Выбрать мороженое" onclick="inlineQtyOpen('food',${i})">+</button>`:(!q?`<button class="inline-open" aria-label="Добавить" onclick="${add}">+</button>`:`<div class="counter hihi-top-counter"><button aria-label="Уменьшить" onclick="change(${attr(iceItem?iceItem.id:id)},-1)">−</button><b>${q}</b><button aria-label="Добавить" onclick="change(${attr(iceItem?iceItem.id:id)},1)">+</button></div>`));
- return `<article class="panel compact-food v96-card ${q?'has-order':'not-ordered'} ${editing?'is-picking':''}"><div class="product"><div class="product-art ${['Чай','Чай в чашке'].includes(x[0])?'tea-art':''} ${x[0]==='Чай'&&table==='child'?'child-tea-art':''}">${iconFor(x[3],x[0])}</div><div class="product-text"><h3>${esc(x[0])}</h3><div class="muted">${esc(x[2]||'')}</div><div class="price">${rub(x[1])}</div></div><div class="v96-actions">${controls}</div></div>${q?`<div class="hihi-food-inset">${x[0]==='Мороженое'?iceItems.map(a=>{const scoops=Number(a.name.match(/Мороженое · (\d+)/)?.[1]||1);return `<div class="v96-selected hihi-ice-selected" role="button" tabindex="0" aria-label="Изменить количество порций мороженого" onclick="hihiIceEdit(${attr(a.id)},${i})" onkeydown="if(event.key==='Enter')hihiIceEdit(${attr(a.id)},${i})"><span class="hihi-selected-description">${hihiSelectedLine(`${a.qty} порц. · по ${scoops} ${scoops===1?'шарику':'шарика'} · ${rub(a.qty*a.price)}`)}</span><button class="order-del pizza-order-close hihi-unified-close" aria-label="Убрать вариант мороженого" onclick="event.stopPropagation();removeFoodSelection(${attr(a.id)})">×</button></div>`}).join(''):`<div class="v96-selected"><span class="hihi-selected-description">${hihiSelectedLine(summary)}</span><button class="order-del pizza-order-close hihi-unified-close" aria-label="Убрать позицию" onclick="removeFoodSelection(${attr(id)})">×</button></div>`}</div>`:''}${special?inlineQtyBlock(pickKind,i):''}</article>`
+ return `<article class="panel compact-food v96-card ${q?'has-order':'not-ordered'} ${editing?'is-picking':''}"><div class="product"><div class="product-art ${['Чай','Чай в чашке'].includes(x[0])?'tea-art':''} ${x[0]==='Чай'&&table==='child'?'child-tea-art':''}">${iconFor(x[3],x[0])}</div><div class="product-text"><h3>${esc(x[0])}</h3><div class="muted">${esc(x[2]||'')}</div><div class="price">${rub(x[1])}</div></div><div class="v96-actions">${controls}</div></div>${q?`<div class="hihi-food-inset" ${x[0]==='Мороженое'?'style="display:flex!important;flex-direction:column!important;gap:11px!important;padding-top:11px!important;padding-bottom:12px!important"':''}>${x[0]==='Мороженое'?iceItems.map(a=>{const scoops=Number(a.name.match(/Мороженое · (\d+)/)?.[1]||1);return `<div class="v96-selected hihi-ice-selected" role="button" tabindex="0" aria-label="Изменить количество порций мороженого" onclick="hihiIceEdit(${attr(a.id)},${i})" onkeydown="if(event.key==='Enter')hihiIceEdit(${attr(a.id)},${i})"><span class="hihi-selected-description">${hihiSelectedLine(`${a.qty} порц. · по ${scoops} ${scoops===1?'шарику':'шарика'} · ${rub(a.qty*a.price)}`)}</span><button class="order-del pizza-order-close hihi-unified-close" aria-label="Убрать вариант мороженого" onclick="event.stopPropagation();removeFoodSelection(${attr(a.id)})">×</button></div>`}).join(''):`<div class="v96-selected"><span class="hihi-selected-description">${hihiSelectedLine(summary)}</span><button class="order-del pizza-order-close hihi-unified-close" aria-label="Убрать позицию" onclick="removeFoodSelection(${attr(id)})">×</button></div>`}</div>`:''}${special?inlineQtyBlock(pickKind,i):''}</article>`
 }
 function tiles(){return `<div class="tiles"><button class="tile" onclick="table='child';go('table')"><span class="emoji">${iconFor('🍕')}</span><strong>Детский<br>стол</strong></button><button class="tile" onclick="table='adult';go('table')"><span class="emoji">${iconFor('☕')}</span><strong>Стол<br>родителей</strong></button><button class="tile" onclick="go('fun')"><span class="emoji">${iconFor('🎮')}</span><strong>Развлечения<br>и программы</strong></button><button class="tile" onclick="go('decor')"><span class="emoji">${iconFor('🎈')}</span><strong>Оформление<br>и декор</strong></button></div>`}
 function coffeeChoiceCard(id,name,price,kind,unit='шт.',desc=''){
@@ -2376,7 +2376,7 @@ function pizzaAdd(i){let name='Пицца «'+PIZZA[i]+'», '+flow.size+' см';
 function drinkPick(i){let name=flow.drink==='juice'?'Сок '+JUICE[i].toLowerCase()+', '+flow.volume:'Вода '+['газированная','негазированная'][i]+', '+flow.volume;let id=table+'|'+name;let n=qty(id)?1:(flow.count||1);put(id,name,flow.price,n,table,{linked:!qty(id)&&!!flow.linked});flow.count=1;flow.linked=false}
 function drinkVolume(i){let juice=flow.drink==='juice';flow.volume=juice?(i===0?'0,2 л':'1 л'):(i===0?'0,5 л':'1,5 л');flow.price=juice?(i===0?60:250):(i===0?60:120);if(!flow.count)flow.count=1;if(!flow.linked)flow.linked=false;go('drinkFlavor')}
 let paperPickerOpen=false;
-function paperPickerToggle(){paperPickerOpen=!paperPickerOpen;renderKeepScroll()}
+function paperPickerToggle(){paperPickerOpen=false;modal='paperChoice';renderModal()}
 function editChosen(id){if(!state.cart[id])return;editId=id;go('edit')}
 function editSelectedPill(el){
  const panel=el.closest('.panel');
@@ -2410,7 +2410,7 @@ function paperShowAdd(i){
 const variant=['Серебряная бумага','Неоновая бумага'][i];
 const name='Бумажное шоу · '+variant;
 for(const id of Object.keys(state.cart))if(id.startsWith('fun|Бумажное шоу'))delete state.cart[id];
-paperPickerOpen=false;put('fun|'+name,name,5500,1,'fun',{unit:'шоу',durationStep:30});
+paperPickerOpen=false;modal=null;put('fun|'+name,name,5500,1,'fun',{unit:'шоу',durationStep:30});renderModal();
 }
 function paperInlineChange(value){if(value==='')return;paperShowAdd(Number(value));}
 function removeSelected(id){delete state.cart[id];save();render()}
@@ -2453,7 +2453,7 @@ function serviceSpecialCard(x,i){
   else if(play)extras=`<div class="play-controls"><div class="animation-extras play-time-controls"><div class="extra-pair"><button onclick="playExtra(1)">+30 мин.</button>${periods>1?`<button class="extra-minus" onclick="playExtra(-1)">−30 мин.</button>`:''}</div></div></div>`;
   else extras=`<div class="animation-extras"><div class="extra-pair"><button onclick="durationChange(${attr(name)},1)">+${minutes===60?'1 час':'30 мин.'} · ${rub(base)}</button>${periods>1?`<button class="extra-minus" onclick="durationChange(${attr(name)},-1)">−${minutes===60?'1 час':'30 мин.'}</button>`:''}</div></div>`;
  }
- return `<div class="panel service-v49"><div class="product"><div class="product-art">${iconFor(x[3],name)}</div><div class="product-text"><h3>${esc(name)}</h3><div class="muted">${play?'1 чел. / 30 мин.':esc(x[2])}</div><div class="price">${rub(base)}</div></div>${!a?`<button class="service-select" aria-label="Добавить" onclick="${select}">+</button>`:''}</div><div class="service-status ${a&&(anim||teen||paper)?'hihi-program-selected':''}" ${!a?'style="display:none"':''}>${a&&(anim||teen||paper)?`<div class="hihi-program-name-row"><span class="hihi-program-name">${programLabel}</span><button type="button" class="hihi-compact-replace" onclick="${select}">Заменить</button></div>`:''}<span class="pill ${a?'selected':''}">${hihiSelectedLine(label)}</span>${a?`<div class="hihi-selected-actions"><button type="button" class="hihi-green-cross" onclick="removeService(${attr(anim?'fun|Анимационная программа':teen?'fun|Программы для подростков':paper?'fun|Бумажное шоу':'fun|'+name)})" aria-label="Удалить выбранное" title="Удалить">×</button></div>`:''}${play&&a?`<div class="stepper play-people-stepper"><button type="button" onclick="playPeople(-1)" ${a.qty<=1?'disabled':''}>−</button><strong>${a.qty}</strong><button type="button" onclick="playPeople(1)">+</button></div>`:''}</div>${paper&&paperPickerOpen?`<div class="paper-inline-control"><div class="paper-icon-choices"><button type="button" class="paper-icon-choice" onclick="paperShowAdd(0)"><img src="${CATALOG_ICONS['Серебряная бумага']}" alt=""><span><strong>Серебряная бумага</strong><small>Блестит и переливается, отражая свет</small></span></button><button type="button" class="paper-icon-choice" onclick="paperShowAdd(1)"><img src="${CATALOG_ICONS['Неоновая бумага']}" alt=""><span><strong>Неоновая бумага</strong><small>Ярко светится в ультрафиолетовом свете</small></span></button></div></div>`:''}${extras}${play&&!a?inlineQtyBlock('fun',i):''}</div>`;
+ return `<div class="panel service-v49"><div class="product"><div class="product-art">${iconFor(x[3],name)}</div><div class="product-text"><h3>${esc(name)}</h3><div class="muted">${play?'1 чел. / 30 мин.':esc(x[2])}</div><div class="price">${rub(base)}</div></div>${!a?`<button class="service-select" aria-label="Добавить" onclick="${select}">+</button>`:''}</div><div class="service-status ${a&&(anim||teen||paper)?'hihi-program-selected':''}" ${!a?'style="display:none"':''}>${a&&(anim||teen||paper)?`<div class="hihi-program-name-row"><span class="hihi-program-name">${programLabel}</span><button type="button" class="hihi-compact-replace" onclick="${select}">Заменить</button></div>`:''}<span class="pill ${a?'selected':''}">${hihiSelectedLine(label)}</span>${a?`<div class="hihi-selected-actions"><button type="button" class="hihi-green-cross" onclick="removeService(${attr(anim?'fun|Анимационная программа':teen?'fun|Программы для подростков':paper?'fun|Бумажное шоу':'fun|'+name)})" aria-label="Удалить выбранное" title="Удалить">×</button></div>`:''}${play&&a?`<div class="stepper play-people-stepper"><button type="button" onclick="playPeople(-1)" ${a.qty<=1?'disabled':''}>−</button><strong>${a.qty}</strong><button type="button" onclick="playPeople(1)">+</button></div>`:''}</div>${extras}${play&&!a?inlineQtyBlock('fun',i):''}</div>`;
 }
 let hihiCartScroll=null;function hihiCartQuickRemove(id){const y=window.scrollY;delete state.cart[id];save();render();hihiRestoreScroll(y)}
 function hihiDeleteCartItem(id){const y=hihiCartScroll??window.scrollY;delete state.cart[id];save();screen='cart';render();hihiRestoreScroll(y)}
@@ -2579,7 +2579,7 @@ ${screen==='cart'?`<div class="footer-nav-row hihi-cart-footer-nav"><button clas
 
 function cleanV77Headings(){document.querySelectorAll('.screen-title').forEach(el=>{const first=el.firstChild;if(first&&first.nodeType===3){first.textContent=first.textContent.replace(/^[\p{Extended_Pictographic}\uFE0F\u200D\s]+/u,'')}})}
 function syncSelectedLabels(){document.querySelectorAll('.pill').forEach(p=>{const t=p.textContent.trim();if(t==='')return;if(t.startsWith('В смете:')||t.startsWith('Выбрано')||/^\d+ (шт|порц|чел|реб)/.test(t)){p.classList.add('selected')}})}
-function renderModal(){document.getElementById('modal').innerHTML=modal==='callback'?`<div class="modal-cover"><div class="modal"><h2>Заказать обратный звонок</h2><p>Оставьте имя и номер телефона, чтобы администратор мог связаться с вами.</p><label class="field">Ваше имя<input id="callbackName" type="text" autocomplete="name" placeholder="Как к вам обращаться"></label><label class="field">Номер телефона<input id="callbackPhone" type="tel" autocomplete="tel" placeholder="+7 999 123-45-67"></label><button class="action wide" onclick="callbackDemo()">Заказать обратный звонок</button><p class="smallnote">Демо: реальная отправка формы пока не подключена.</p><button class="action light wide" style="margin-top:10px" onclick="closeModal()">Закрыть</button></div></div>`:modal==='reset'?`<div class="modal-cover"><div class="modal"><h2>🔄 Начать заново?</h2><p>Все выбранные позиции и количество детей будут удалены. Это действие нельзя отменить.</p><button class="action danger wide" onclick="resetYes()">Да, начать заново</button><button class="action light wide" style="margin-top:10px" onclick="closeModal()">Нет, вернуться</button></div></div>`:modal==='date'?`<div class="modal-cover"><div class="modal"><h2>📅 Уточнить дату праздника</h2><p>Какая дата вас интересует? Оставьте контакты — администратор свяжется с вами после получения заявки.</p><label class="field">Желаемая дата<input id="dateWish" type="date"></label><label class="field">Ваше имя<input id="dateName" autocomplete="name" placeholder="Ваше имя"></label><label class="field">Телефон<input id="datePhone" type="tel" autocomplete="tel" placeholder="+7 999 123-45-67"></label><button class="action wide" onclick="dateDemo()">Отправить запрос</button><p class="smallnote">Демо: отправка администратору ещё не подключена.</p><button class="action light wide" style="margin-top:10px" onclick="closeModal()">Закрыть</button></div></div>`:modal==='ownFood'?`<div class="modal-cover"><div class="modal"><h2>Принести свою еду</h2><p><strong>Аренда взрослого стола — 3 000 ₽ на всё время мероприятия.</strong></p><p>Вы можете принести с собой любую еду и напитки, включая алкоголь.</p>${state.cart[OWN_FOOD_ID]?`<div class="own-food-added">✓ Услуга уже в смете</div><button class="action danger wide" onclick="removeOwnFood()">Убрать из сметы</button>`:`<button class="action wide" onclick="addOwnFood()">Добавить в смету · 3 000 ₽</button>`}<button class="action light wide" style="margin-top:10px" onclick="closeModal()">Закрыть</button></div></div>`:''} 
+function renderModal(){document.getElementById('modal').innerHTML=modal==='paperChoice'?`<div class="modal-cover" onclick="if(event.target===this)closeModal()"><div class="modal hihi-paper-modal" role="dialog" aria-modal="true" aria-label="Выбор бумаги для шоу"><h2>Выберите бумагу</h2><p>Бумажное шоу · 30 мин. · 5 500 ₽</p><div class="hihi-paper-modal-options"><button type="button" class="hihi-paper-modal-choice" onclick="paperShowAdd(0)"><img src="${CATALOG_ICONS['Серебряная бумага']}" alt=""><span><strong>Серебряная бумага</strong><small>Блестящая, отражает свет</small></span></button><button type="button" class="hihi-paper-modal-choice" onclick="paperShowAdd(1)"><img src="${CATALOG_ICONS['Неоновая бумага']}" alt=""><span><strong>Неоновая бумага</strong><small>Светится в ультрафиолете</small></span></button></div><button type="button" class="action light wide" onclick="closeModal()">Отмена</button></div></div>`:modal==='callback'?`<div class="modal-cover"><div class="modal"><h2>Заказать обратный звонок</h2><p>Оставьте имя и номер телефона, чтобы администратор мог связаться с вами.</p><label class="field">Ваше имя<input id="callbackName" type="text" autocomplete="name" placeholder="Как к вам обращаться"></label><label class="field">Номер телефона<input id="callbackPhone" type="tel" autocomplete="tel" placeholder="+7 999 123-45-67"></label><button class="action wide" onclick="callbackDemo()">Заказать обратный звонок</button><p class="smallnote">Демо: реальная отправка формы пока не подключена.</p><button class="action light wide" style="margin-top:10px" onclick="closeModal()">Закрыть</button></div></div>`:modal==='reset'?`<div class="modal-cover"><div class="modal"><h2>🔄 Начать заново?</h2><p>Все выбранные позиции и количество детей будут удалены. Это действие нельзя отменить.</p><button class="action danger wide" onclick="resetYes()">Да, начать заново</button><button class="action light wide" style="margin-top:10px" onclick="closeModal()">Нет, вернуться</button></div></div>`:modal==='date'?`<div class="modal-cover"><div class="modal"><h2>📅 Уточнить дату праздника</h2><p>Какая дата вас интересует? Оставьте контакты — администратор свяжется с вами после получения заявки.</p><label class="field">Желаемая дата<input id="dateWish" type="date"></label><label class="field">Ваше имя<input id="dateName" autocomplete="name" placeholder="Ваше имя"></label><label class="field">Телефон<input id="datePhone" type="tel" autocomplete="tel" placeholder="+7 999 123-45-67"></label><button class="action wide" onclick="dateDemo()">Отправить запрос</button><p class="smallnote">Демо: отправка администратору ещё не подключена.</p><button class="action light wide" style="margin-top:10px" onclick="closeModal()">Закрыть</button></div></div>`:modal==='ownFood'?`<div class="modal-cover"><div class="modal"><h2>Принести свою еду</h2><p><strong>Аренда взрослого стола — 3 000 ₽ на всё время мероприятия.</strong></p><p>Вы можете принести с собой любую еду и напитки, включая алкоголь.</p>${state.cart[OWN_FOOD_ID]?`<div class="own-food-added">✓ Услуга уже в смете</div><button class="action danger wide" onclick="removeOwnFood()">Убрать из сметы</button>`:`<button class="action wide" onclick="addOwnFood()">Добавить в смету · 3 000 ₽</button>`}<button class="action light wide" style="margin-top:10px" onclick="closeModal()">Закрыть</button></div></div>`:''} 
 function sendDemo(){let n=document.getElementById('customer').value.trim(),p=document.getElementById('phone').value.trim();if(!n||p.replace(/\D/g,'').length<7)return alert('Укажите имя и корректный номер телефона');alert('Это демонстрация дизайна. Заявка не отправлена. Для реальной отправки подключим Telegram-бота к серверу.');}
 try{render()}catch(e){document.getElementById('app').innerHTML='<div class="wrap"><h2>Ошибка загрузки</h2><pre>'+esc(e.message)+'</pre></div>';console.error(e)}
 </script><script>new MutationObserver(()=>{document.querySelectorAll(".pill").forEach(p=>{if(/(?:В смете|Выбрано|\d+\s*(?:шт|порц|чел|реб))/.test(p.textContent))p.classList.add("selected")})}).observe(document.getElementById("app")||document.body,{childList:true,subtree:true});</script><script>new MutationObserver(()=>{if(typeof cleanV77Headings==='function')cleanV77Headings()}).observe(document.getElementById('app'),{childList:true,subtree:false});if(typeof cleanV77Headings==='function')cleanV77Headings();</script><style id="hihi-unified-selected-20261121">
@@ -3920,4 +3920,85 @@ body:has(.home-v20){background:#10147d!important;}
 /* Nothing interactive or content-bearing follows the bottom decoration. */
 #app:has(.home-v20) .hihi-home-tail{pointer-events:none!important;}
 </style>
-<style id="hihi-prevent-scroll-anchor-jump">#app:has(.hihi-menu-sticky){overflow-anchor:none!important;}</style></body></html>
+<style id="hihi-prevent-scroll-anchor-jump">#app:has(.hihi-menu-sticky){overflow-anchor:none!important;}</style>
+<style id="hihi-layout-corrections-20261123">
+/* Regular, consistent separation of icon, text and right-hand action. */
+#app .panel:is(.compact-food,.unified-catalog,.decor-card,.generic-fun-card,.service-v49,.v96-card) > .product,
+#app .panel:is(.compact-food,.unified-catalog,.decor-card,.generic-fun-card,.service-v49,.v96-card) > .product.catalog-product {
+  display:grid!important;
+  grid-template-columns:64px minmax(0,1fr) max-content!important;
+  column-gap:14px!important;
+  align-items:center!important;
+  min-height:74px!important;
+  box-sizing:border-box!important;
+}
+#app .panel:is(.compact-food,.unified-catalog,.decor-card,.generic-fun-card,.service-v49,.v96-card) > .product > .product-art {
+  grid-column:1!important;grid-row:1!important;justify-self:center!important;
+  align-self:center!important;position:relative!important;left:auto!important;
+  max-width:64px!important;min-width:0!important;margin:0!important;
+}
+#app .panel:is(.compact-food,.unified-catalog,.decor-card,.generic-fun-card,.service-v49,.v96-card) > .product > .product-text {
+  grid-column:2!important;grid-row:1!important;align-self:center!important;
+  min-width:0!important;width:auto!important;margin:0!important;
+  overflow-wrap:break-word!important;
+}
+#app .panel:is(.compact-food,.unified-catalog,.decor-card,.generic-fun-card,.service-v49,.v96-card) > .product > :is(.inline-open,.v96-actions,.service-side,.hihi-top-counter,.play-people-stepper) {
+  grid-column:3!important;grid-row:1!important;justify-self:end!important;
+  align-self:center!important;position:static!important;inset:auto!important;
+  transform:none!important;margin:0!important;
+}
+#app .panel.hihi-coffee-main > .product.catalog-product {
+  grid-template-columns:64px minmax(0,1fr) 44px!important;column-gap:14px!important;
+}
+#app .panel.hihi-coffee-main > .product.catalog-product > .product-art {width:62px!important;height:62px!important;}
+@media(max-width:480px){
+  #app .panel:is(.compact-food,.unified-catalog,.decor-card,.generic-fun-card,.service-v49,.v96-card) > .product,
+  #app .panel:is(.compact-food,.unified-catalog,.decor-card,.generic-fun-card,.service-v49,.v96-card) > .product.catalog-product,
+  #app .panel.hihi-coffee-main > .product.catalog-product {
+    grid-template-columns:52px minmax(0,1fr) max-content!important;
+    column-gap:12px!important;
+  }
+  #app .panel:is(.compact-food,.unified-catalog,.decor-card,.generic-fun-card,.service-v49,.v96-card) > .product > .product-art {max-width:52px!important;}
+  #app .panel.hihi-coffee-main > .product.catalog-product > .product-art {width:52px!important;height:52px!important;}
+}
+/* selected pizza lines: both text and X align to the vertical center */
+#app .pizza-unified .catalog-orders .pizza-order-row.hihi-pizza-editable {
+  display:flex!important;align-items:center!important;justify-content:space-between!important;
+  min-height:60px!important;padding:11px 13px!important;box-sizing:border-box!important;
+  line-height:1.35!important;
+}
+#app .pizza-unified .catalog-orders .pizza-order-row.hihi-pizza-editable > .hihi-selected-description {
+  display:flex!important;align-items:center!important;align-self:stretch!important;
+  justify-content:flex-start!important;min-height:38px!important;
+  flex:1 1 auto!important;margin:0!important;padding:0!important;
+  line-height:1.35!important;
+}
+#app .pizza-unified .catalog-orders .pizza-order-row.hihi-pizza-editable > .pizza-order-close {
+  align-self:center!important;flex-shrink:0!important;margin:0 0 0 8px!important;
+}
+/* two or more ice selections are separate rounded capsules, never touching */
+#app .compact-food .hihi-food-inset:has(.hihi-ice-selected) {
+  display:flex!important;flex-direction:column!important;gap:10px!important;
+  padding-top:10px!important;padding-bottom:12px!important;
+}
+#app .compact-food .hihi-food-inset .v96-selected.hihi-ice-selected,
+#app .compact-food .hihi-food-inset .v96-selected.hihi-ice-selected:last-child {
+  box-sizing:border-box!important;margin:0!important;min-height:56px!important;
+  padding:10px 13px!important;border-radius:16px!important;
+  display:flex!important;align-items:center!important;justify-content:space-between!important;
+}
+/* reduce excess pale-blue area under sticky table selector */
+#app .hihi-menu-sticky {padding:4px 0 2px!important;margin:0 0 8px!important;min-height:0!important;
+  border-radius:0 0 12px 12px!important;background:#dcefff!important;box-shadow:none!important;}
+#app .hihi-menu-sticky .table-tabs {margin:0!important;}
+#app .hihi-menu-sticky .hihi-parent-food-bar {margin-top:5px!important;}
+/* paper picker is a separate modal with large, mobile-friendly choices. */
+#modal .hihi-paper-modal {max-width:440px;width:calc(100vw - 36px);box-sizing:border-box;}
+#modal .hihi-paper-modal-options {display:flex;flex-direction:column;gap:10px;margin:16px 0;}
+#modal .hihi-paper-modal-choice {display:flex;align-items:center;text-align:left;gap:12px;width:100%;
+  background:#e9f6ff;border:1px solid #a8d3f5;border-radius:16px;padding:12px;color:#182c66;}
+#modal .hihi-paper-modal-choice img{width:54px;height:54px;object-fit:contain;flex:0 0 54px;}
+#modal .hihi-paper-modal-choice span{display:flex;flex-direction:column;gap:4px;}
+#modal .hihi-paper-modal-choice small{font-size:12px;color:#5f749b;line-height:1.4;}
+</style>
+</body></html>
