@@ -2686,7 +2686,7 @@ async function hihiSubmitToTelegram(type, data, modalType){
   if(type==='order'){
     if(!items().length){alert('Сначала добавьте хотя бы одну позицию в смету');return;}
     payload.kids=state.kids||0;
-    payload.items=items().map(x=>({name:x.name,qty:x.qty,unit:x.unit||'шт.',price:x.price,blocks:x.blocks||1}));
+    payload.items=items().map(x=>({id:x.id||'',kind:x.kind||'',name:x.name,qty:x.qty,unit:x.unit||'шт.',price:x.price,blocks:x.blocks||1}));
     payload.total=total();
   }
   const selector=modalType ? '.modal-cover .action.wide:not(.light)' : '#hihi-send-order';
