@@ -2765,7 +2765,7 @@ function hihiEstimatedTimeMarkup(){
   </section>`;
 }
 
-function cartScreen(){let h=navigation('home')+`<h2 class="screen-title">Моя смета</h2>`;if(!items().length)h+=`<div class="panel empty"><div class="big"><img class="cart-empty-icon" src="${LINE_UI_ICONS.cart}" alt=""></div><h3>Пока ничего нет</h3><p>Добавьте угощения или развлечения</p><button class="action" onclick="go('home')">Выбрать товары</button></div>`;for(const kind of ['child','adult','fun','decor']){let list=items().filter(x=>x.kind===kind);if(!list.length)continue;h+=`<div class="section-title"><h2 class="cart-section-heading"><img src="${NEW_UI_ICONS[kind==='child'?'child':kind==='adult'?'adult':kind==='fun'?'fun':'decor']}" alt="">${catLabel(kind)}</h2></div><div class="panel">`;for(const x of list)h+=`<div class="cart-line cart-edit-direct hihi-cart-row" role="button" tabindex="0" onclick="if(event.target.closest('button'))return;hihiCartScroll=window.scrollY;editId=${attr(x.id)};go('edit')" onkeydown="if(event.key==='Enter'){hihiCartScroll=window.scrollY;editId=${attr(x.id)};go('edit')}"><div class="row"><div><strong>${esc(x.name)}</strong><div class="detail">${x.qty} ${['Аквагрим','Блеск-тату'].some(n=>x.name.startsWith(n))?'чел.':esc(x.unit||'шт.')} × ${rub(x.price)}${x.blocks>1?' × '+x.blocks+' периодов':''}</div></div><span class="hihi-cart-price-actions"><span class="sum">${rub(x.qty*x.price*(x.blocks||1))}</span><button type="button" class="order-del pizza-order-close hihi-cart-quick-delete" aria-label="Удалить ${esc(x.name)}" onclick="event.stopPropagation();hihiCartQuickRemove(${attr(x.id)})">×</button></span></div></div>`;h+='</div>'}h+=hihiEstimatedTimeMarkup();if(items().some(x=>x.kind==='adult'))h+=`<div class="panel hihi-adults-in-cart"><div class="row"><strong>Примерное количество родителей</strong><span>${state.adultGuests||'Пока неизвестно'}</span></div><button class="action light wide" onclick="hihiEditAdultCount()">Изменить количество родителей</button></div>`;h+=`<div class="total-card"><div class="row"><span>Итого за праздник</span><strong>${rub(total())}</strong></div><small>Предварительный расчёт · не является бронированием</small></div><div class="actions hihi-cart-actions"><button class="action soft hihi-cart-reset-danger" onclick="resetAsk()">Составить смету заново</button><button class="action soft" onclick="confirmKidsEdit()">Изменить количество детей</button></div>`;return h}
+function cartScreen(){let h=navigation('home')+`<h2 class="screen-title">Моя смета</h2>`;if(!items().length)h+=`<div class="panel empty"><div class="big"><img class="cart-empty-icon" src="${LINE_UI_ICONS.cart}" alt=""></div><h3>Пока ничего нет</h3><p>Добавьте угощения или развлечения</p><button class="action" onclick="go('home')">Выбрать товары</button></div>`;for(const kind of ['child','adult','fun','decor']){let list=items().filter(x=>x.kind===kind);if(!list.length)continue;h+=`<div class="section-title"><h2 class="cart-section-heading"><img src="${NEW_UI_ICONS[kind==='child'?'child':kind==='adult'?'adult':kind==='fun'?'fun':'decor']}" alt="">${catLabel(kind)}</h2></div><div class="panel">`;for(const x of list)h+=`<div class="cart-line cart-edit-direct hihi-cart-row" role="button" tabindex="0" onclick="if(event.target.closest('button'))return;hihiCartScroll=window.scrollY;editId=${attr(x.id)};go('edit')" onkeydown="if(event.key==='Enter'){hihiCartScroll=window.scrollY;editId=${attr(x.id)};go('edit')}"><div class="row"><div><strong>${esc(x.name)}</strong><div class="detail">${x.qty} ${['Аквагрим','Блеск-тату'].some(n=>x.name.startsWith(n))?'чел.':esc(x.unit||'шт.')} × ${rub(x.price)}${x.blocks>1?' × '+x.blocks+' периодов':''}</div></div><span class="hihi-cart-price-actions"><span class="sum">${rub(x.qty*x.price*(x.blocks||1))}</span><button type="button" class="order-del pizza-order-close hihi-cart-quick-delete" aria-label="Удалить ${esc(x.name)}" onclick="event.stopPropagation();hihiCartQuickRemove(${attr(x.id)})">×</button></span></div></div>`;h+='</div>'}h+=hihiEstimatedTimeMarkup();h+=`<div class="total-card"><div class="row"><span>Итого за праздник</span><strong>${rub(total())}</strong></div><small>Предварительный расчёт · не является бронированием</small></div><div class="hihi-cart-guest-setup"><div class="hihi-cart-guest-entry"><div class="hihi-cart-guest-title"><strong>Примерное количество детей</strong><span>${state.kids>0?state.kids+' чел.':'Пока неизвестно'}</span></div><button class="action soft wide" onclick="confirmKidsEdit()">Изменить количество детей</button></div>${items().some(x=>x.kind==='adult'||x.id===OWN_FOOD_ID||x.id===CHILD_OWN_FOOD_ID||x.name==='Аренда помещения'||x.name.startsWith('Аренда помещения '))?`<div class="hihi-cart-guest-entry hihi-cart-parents"><div class="hihi-cart-guest-title"><strong>Примерное количество родителей</strong><span>${state.adultGuests?state.adultGuests+' чел.':'Пока неизвестно'}</span></div><button class="action soft wide" onclick="hihiEditAdultCount()">Изменить количество родителей</button></div>`:''}</div><div class="actions hihi-cart-actions"><button class="action soft hihi-cart-reset-danger" onclick="resetAsk()">Составить смету заново</button></div>`;return h}
 let homeMenuOpen=false;function toggleHomeMenu(){homeMenuOpen=!homeMenuOpen;renderKeepScroll()}
 function render(){
 const oldAdultRental=state.cart[OWN_FOOD_ID];if(oldAdultRental&&oldAdultRental.price!==4000){oldAdultRental.price=4000;save()}
@@ -4612,5 +4612,43 @@ body>#bottom>.bottom{box-sizing:border-box!important;max-width:100%!important;mi
  #app .panel:is(.service-v49,.generic-fun-card,.decor-card,.compact-food) > .product {padding-right:86px!important;}
  #app .panel:is(.service-v49,.generic-fun-card,.decor-card,.compact-food) > .product > :is(button.service-select,button.inline-open,.counter,.play-people-stepper,.v96-actions,.service-side){right:9px!important;}
 }
+</style>
+
+<style id="hihi-cart-guest-and-variant-spacing-fix-20261126">
+/* Separate green selections: older full-bleed selectors are deliberately overridden. */
+#app .panel.compact-food.v96-card > .hihi-food-inset:has(.hihi-variant-selected){
+ display:flex!important;flex-direction:column!important;align-items:stretch!important;
+ row-gap:11px!important;gap:11px!important;padding:10px 0 0!important;
+ margin:9px 0 0!important;background:transparent!important;overflow:visible!important;
+}
+#app .panel.compact-food.v96-card > .hihi-food-inset > .v96-selected.hihi-variant-selected,
+#app .panel.compact-food.v96-card > .hihi-food-inset > .v96-selected.hihi-variant-selected + .v96-selected.hihi-variant-selected {
+ display:flex!important;align-items:center!important;justify-content:flex-start!important;
+ flex:0 0 auto!important;width:100%!important;min-height:54px!important;
+ margin:0!important;padding:10px 58px 10px 15px!important;
+ border-radius:15px!important;box-sizing:border-box!important;background:#d9f7e9!important;
+ position:relative!important;transform:none!important;
+}
+#app .panel.compact-food.v96-card > .hihi-food-inset > .hihi-variant-selected .hihi-selected-description{
+ align-self:center!important;display:flex!important;align-items:center!important;
+ min-height:35px!important;padding:0!important;margin:0!important;line-height:1.35!important;
+}
+#app .panel.compact-food.v96-card > .hihi-food-inset > .hihi-variant-selected .hihi-unified-close{
+ right:13px!important;top:50%!important;transform:translateY(-50%)!important;
+ margin:0!important;align-self:center!important;
+}
+/* Slightly reduce the teenage-program icon without shrinking its icon column. */
+#app .panel.service-v49 .product-art img.item-icon.hihi-teen-small-art{
+ width:56px!important;height:56px!important;max-width:56px!important;max-height:56px!important;
+ transform:scale(1)!important;object-fit:contain!important;
+}
+/* Guest quantities directly beneath the estimate, in the requested order. */
+#app .hihi-cart-guest-setup{display:flex;flex-direction:column;gap:10px;margin:14px 0 12px;}
+#app .hihi-cart-guest-entry{background:#fff;border-radius:17px;padding:15px 17px;
+ border:1px solid #d9e9fc;display:flex;flex-direction:column;gap:10px;}
+#app .hihi-cart-guest-title{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;color:#132b65;}
+#app .hihi-cart-guest-title strong{font-size:15px;}
+#app .hihi-cart-guest-title span{color:#426089;font-weight:700;}
+#app .hihi-cart-guest-entry .action{min-height:43px!important;margin:0!important;}
 </style>
 </body></html>
