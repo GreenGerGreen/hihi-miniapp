@@ -363,6 +363,34 @@ body{padding-bottom:calc(190px + env(safe-area-inset-bottom,0px))!important}
 .table-menu-tiles .tile .emoji img{object-fit:contain!important}
 .home-category-icon{width:77px!important;height:70px!important;overflow:visible!important}
 @media(max-width:380px){.table-menu-tiles .tile{padding-left:86px!important}}
+
+/* Nov 27: snowflakes stay at the button edges, never over the label. */
+#app .home-dropdown button.hihi-newyear-menu-button::before,
+#app .home-dropdown button.hihi-newyear-menu-button::after {
+  content:"❄"!important;
+  position:absolute!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  inset:auto!important;
+  top:50%!important;
+  transform:translateY(-50%)!important;
+  width:24px!important;
+  height:24px!important;
+  padding:0!important;
+  margin:0!important;
+  line-height:1!important;
+  letter-spacing:0!important;
+  font-size:17px!important;
+  font-weight:400!important;
+  color:rgba(255,255,255,.25)!important;
+  background:none!important;
+  pointer-events:none!important;
+  z-index:1!important;
+}
+#app .home-dropdown button.hihi-newyear-menu-button::before {left:12px!important;right:auto!important;}
+#app .home-dropdown button.hihi-newyear-menu-button::after {right:12px!important;left:auto!important;}
+#app .home-dropdown button.hihi-newyear-menu-button > span:not(.hihi-drop-ico) {position:relative!important;z-index:2!important;}
 </style><style id="v32-improvements">
 *{box-sizing:border-box}html,body{max-width:100%;overflow-x:hidden}
 input[type="date"],input[type="tel"],input[type="text"],input[type="number"]{max-width:100%;min-width:0;box-sizing:border-box}
